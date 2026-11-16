@@ -1,281 +1,1127 @@
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QueueFlow | Smart Campus</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-</head>
-<body>
+/* =========================================
+   QUEUEFLOW - NEON AURORA GLASS
+========================================= */
 
-<div class="app">
+:root {
+    --bg: #090b1b;
+    --cyan: #45e5f5;
+    --purple: #a276ff;
+    --pink: #ef6bc9;
+    --orange: #ffae70;
+    --green: #5ce6b1;
+    --white: #f4f5ff;
+    --muted: #969bb8;
+    --border: rgba(255,255,255,0.13);
+    --glass: rgba(255,255,255,0.065);
+}
 
-    <aside class="sidebar">
-        <div class="brand">
-            <div class="brand-icon">Q</div>
-            <div>
-                <h2>QueueFlow</h2>
-                <small>SMART CAMPUS</small>
-            </div>
-        </div>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        <div class="menu-label">WORKSPACE</div>
-        <nav>
-            <button class="nav-link active" data-page="dashboard">
-                <span>▦</span> Dashboard
-            </button>
-            <button class="nav-link" data-page="student">
-                <span>＋</span> Join a Queue
-            </button>
-            <button class="nav-link" data-page="operator">
-                <span>▣</span> Operator Panel
-            </button>
-            <button class="nav-link" data-page="services">
-                <span>▤</span> Campus Services
-            </button>
-            <button class="nav-link" data-page="history">
-                <span>◷</span> Queue History
-            </button>
-        </nav>
+html {
+    scroll-behavior: smooth;
+}
 
-        <div class="sidebar-bottom">
-            <div class="system-status">
-                <span class="online-dot"></span>
-                System Operational
-                <small>Front-end demonstration</small>
-            </div>
-            <div class="profile">
-                <div class="avatar">A</div>
-                <div>
-                    <strong>Administrator</strong>
-                    <small>Campus Manager</small>
-                </div>
-            </div>
-        </div>
-    </aside>
+body {
+    font-family: 'Inter', sans-serif;
+    background:
+        radial-gradient(ellipse at 8% 10%, rgba(121,70,214,.23), transparent 35%),
+        radial-gradient(ellipse at 90% 12%, rgba(39,177,224,.18), transparent 32%),
+        radial-gradient(ellipse at 75% 90%, rgba(211,67,169,.13), transparent 35%),
+        #090b1b;
+    color: var(--white);
+    min-height: 100vh;
+    background-attachment: fixed;
+    font-size: 14px;
+}
 
-    <main class="main">
+a {
+    text-decoration: none;
+    color: inherit;
+}
 
-        <header class="topbar">
-            <div>
-                <div class="breadcrumb">Campus / <span id="breadcrumb">Dashboard</span></div>
-                <h1 id="pageTitle">Dashboard Overview</h1>
-            </div>
-            <div class="top-actions">
-                <div class="date-display" id="todayDate"></div>
-                <div class="top-avatar">A</div>
-            </div>
-        </header>
+button, input, select {
+    font: inherit;
+}
 
-        <!-- DASHBOARD -->
-        <section class="page active" id="dashboard">
+button {
+    cursor: pointer;
+}
 
-            <div class="welcome">
-                <div>
-                    <span class="eyebrow">CAMPUS SERVICE MANAGEMENT</span>
-                    <h2>Manage queues smarter.</h2>
-                    <p>Monitor student services and manage waiting lines from one place.</p>
-                </div>
-                <button class="primary-btn" onclick="showPage('student')">＋ Generate Token</button>
-            </div>
+.app {
+    display: flex;
+    min-height: 100vh;
+}
 
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-top"><span>Total Waiting</span><span class="stat-icon">◷</span></div>
-                    <h2 id="totalWaiting">0</h2>
-                    <small>Students in all queues</small>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-top"><span>Currently Serving</span><span class="stat-icon">◉</span></div>
-                    <h2 id="totalServing">0</h2>
-                    <small>Active service counters</small>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-top"><span>Completed Today</span><span class="stat-icon">✓</span></div>
-                    <h2 id="totalCompleted">0</h2>
-                    <small>Successfully completed</small>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-top"><span>Campus Services</span><span class="stat-icon">▦</span></div>
-                    <h2>10</h2>
-                    <small>Available service counters</small>
-                </div>
-            </div>
+/* BACKGROUND LIGHTS */
 
-            <div class="content-grid">
-                <div class="panel">
-                    <div class="panel-heading">
-                        <div>
-                            <h3>Service Overview</h3>
-                            <p>Live queue status by department</p>
-                        </div>
-                        <button class="text-btn" onclick="showPage('services')">View all →</button>
-                    </div>
-                    <div id="dashboardServices" class="service-list"></div>
-                </div>
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    filter: blur(110px);
+    opacity: .17;
+    pointer-events: none;
+    z-index: -1;
+}
 
-                <div class="panel">
-                    <div class="panel-heading">
-                        <div>
-                            <h3>Currently Serving</h3>
-                            <p>Active tokens across campus</p>
-                        </div>
-                    </div>
-                    <div id="servingList" class="serving-list"></div>
-                </div>
-            </div>
+body::before {
+    background: #9b50ff;
+    top: 5%;
+    left: 25%;
+}
 
-            <div class="panel">
-                <div class="panel-heading">
-                    <div>
-                        <h3>Recent Activity</h3>
-                        <p>Latest queue transactions</p>
-                    </div>
-                    <button class="text-btn" onclick="showPage('history')">Full history →</button>
-                </div>
-                <div class="table-wrap">
-                    <table>
-                        <thead>
-                            <tr><th>TOKEN</th><th>STUDENT</th><th>SERVICE</th><th>STATUS</th></tr>
-                        </thead>
-                        <tbody id="recentActivity"></tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
+body::after {
+    background: #24d9ed;
+    right: 4%;
+    bottom: 5%;
+}
 
-        <!-- STUDENT PAGE -->
-        <section class="page" id="student">
-            <div class="section-intro">
-                <span class="eyebrow">STUDENT PORTAL</span>
-                <h2>Get your queue token</h2>
-                <p>Select a campus service and join its waiting queue.</p>
-            </div>
+/* GLASS */
 
-            <div class="student-layout">
-                <div class="panel">
-                    <h3>Token Registration</h3>
-                    <p class="muted">Enter your details to generate a token.</p>
+.sidebar,
+.glass-panel,
+.stat-card,
+.service-card,
+.system-status {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: 0 12px 40px rgba(0,0,0,.17);
+}
 
-                    <form id="joinForm">
-                        <label for="studentName">Student name</label>
-                        <input id="studentName" type="text" placeholder="Enter your full name" required maxlength="50">
+/* SIDEBAR */
 
-                        <label for="studentId">Student ID (optional)</label>
-                        <input id="studentId" type="text" placeholder="e.g. 1EP23CS001" maxlength="30">
+.sidebar {
+    width: 245px;
+    position: fixed;
+    top: 18px;
+    bottom: 18px;
+    left: 18px;
+    border-radius: 20px;
+    padding: 25px 17px;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+}
 
-                        <label for="serviceSelect">Choose service</label>
-                        <select id="serviceSelect" required>
-                            <option value="">Select a service</option>
-                        </select>
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 7px 39px;
+}
 
-                        <button class="primary-btn full-btn" type="submit">Generate My Token →</button>
-                    </form>
-                    <div id="joinMessage" class="message"></div>
-                </div>
+.brand-icon {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    color: #10152b;
+    font-size: 25px;
+    font-weight: 800;
+    border-radius: 13px;
+    background: linear-gradient(135deg, var(--cyan), var(--purple), var(--pink));
+    box-shadow: 0 0 25px rgba(162,118,255,.35);
+}
 
-                <div class="panel token-panel">
-                    <div class="token-symbol">Q</div>
-                    <span class="eyebrow">YOUR DIGITAL TOKEN</span>
-                    <h2 id="generatedToken">---</h2>
-                    <p id="generatedService">Your service will appear here</p>
-                    <div class="token-details">
-                        <div><small>Position</small><strong id="generatedPosition">--</strong></div>
-                        <div><small>Estimated wait</small><strong id="generatedWait">--</strong></div>
-                    </div>
-                    <p class="token-note">Keep your token number safe. Check the dashboard for queue updates.</p>
-                </div>
-            </div>
-        </section>
+.brand h2 {
+    font-size: 20px;
+    letter-spacing: -.8px;
+}
 
-        <!-- OPERATOR PAGE -->
-        <section class="page" id="operator">
-            <div class="section-intro">
-                <span class="eyebrow">SERVICE MANAGEMENT</span>
-                <h2>Operator control center</h2>
-                <p>Manage waiting students and process active tokens.</p>
-            </div>
+.brand small {
+    display: block;
+    color: var(--cyan);
+    font-size: 9px;
+    letter-spacing: 2px;
+    margin-top: 4px;
+    font-weight: 700;
+}
 
-            <div class="panel operator-select">
-                <label for="operatorService">Select service counter</label>
-                <select id="operatorService"></select>
-            </div>
+.menu-label {
+    color: #727c9e;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    padding: 0 11px 14px;
+}
 
-            <div class="operator-grid">
-                <div class="panel active-token-card">
-                    <span class="eyebrow">NOW SERVING</span>
-                    <h2 id="operatorCurrent">---</h2>
-                    <h3 id="operatorName">No active token</h3>
-                    <p id="operatorStudentId" class="muted">Select a service to begin</p>
-                    <div class="operator-buttons">
-                        <button class="primary-btn" id="callNextBtn">Call Next →</button>
-                        <button class="secondary-btn" id="completeBtn">✓ Complete</button>
-                    </div>
-                    <div id="operatorMessage" class="message"></div>
-                </div>
+.sidebar nav {
+    display: grid;
+    gap: 9px;
+}
 
-                <div class="panel">
-                    <div class="panel-heading">
-                        <div>
-                            <h3>Waiting Queue</h3>
-                            <p>Students waiting at this counter</p>
-                        </div>
-                        <span class="count-pill" id="operatorWaitingCount">0</span>
-                    </div>
-                    <div id="operatorQueue" class="operator-queue"></div>
-                </div>
-            </div>
-        </section>
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 12px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    color: #b2b7ce;
+    font-size: 12px;
+    transition: .25s;
+}
 
-        <!-- SERVICES PAGE -->
-        <section class="page" id="services">
-            <div class="section-intro">
-                <span class="eyebrow">CAMPUS DIRECTORY</span>
-                <h2>Campus services</h2>
-                <p>Explore all available student support departments.</p>
-            </div>
-            <div class="services-grid" id="allServices"></div>
-        </section>
+.nav-link span {
+    font-size: 19px;
+    width: 23px;
+    text-align: center;
+}
 
-        <!-- HISTORY PAGE -->
-        <section class="page" id="history">
-            <div class="section-intro">
-                <span class="eyebrow">TRANSACTION RECORDS</span>
-                <h2>Queue history</h2>
-                <p>Review completed and active queue transactions.</p>
-            </div>
+.nav-link:hover {
+    color: var(--cyan);
+    background: rgba(255,255,255,.06);
+    transform: translateX(3px);
+}
 
-            <div class="stats-grid history-stats">
-                <div class="stat-card"><span>Total generated</span><h2 id="historyTotal">0</h2></div>
-                <div class="stat-card"><span>Completed</span><h2 id="historyCompleted">0</h2></div>
-                <div class="stat-card"><span>Waiting</span><h2 id="historyWaiting">0</h2></div>
-                <div class="stat-card"><span>Skipped</span><h2 id="historySkipped">0</h2></div>
-            </div>
+.nav-link.active {
+    color: white;
+    border-color: rgba(255,255,255,.2);
+    background: linear-gradient(
+        105deg,
+        rgba(169,79,255,.72),
+        rgba(69,229,245,.62)
+    );
+    box-shadow: 0 0 22px rgba(117,103,255,.28);
+}
 
-            <div class="panel">
-                <div class="panel-heading">
-                    <div><h3>All transactions</h3><p>Stored in this browser</p></div>
-                    <button class="danger-btn" id="resetBtn">Reset demo data</button>
-                </div>
-                <div class="table-wrap">
-                    <table>
-                        <thead>
-                            <tr><th>TOKEN</th><th>STUDENT</th><th>SERVICE</th><th>STATUS</th><th>TIME</th></tr>
-                        </thead>
-                        <tbody id="historyTable"></tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
+.sidebar-bottom {
+    margin-top: auto;
+}
 
-        <footer>QueueFlow © 2026 · Smart Campus Queue Management · Front-end Demo</footer>
+.system-status {
+    border-radius: 11px;
+    padding: 13px;
+    color: var(--green);
+    font-size: 10px;
+}
 
-    </main>
-</div>
+.system-status small {
+    display: block;
+    color: var(--muted);
+    margin-top: 7px;
+}
 
-<script src="script.js"></script>
-</body>
-</html>
+.online-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    background: var(--green);
+    border-radius: 50%;
+    box-shadow: 0 0 9px var(--green);
+    margin-right: 6px;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 3px 0;
+}
+
+.avatar, .top-avatar {
+    width: 35px;
+    height: 35px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #9e69ed, #34b9db);
+    color: white;
+    font-weight: 700;
+    font-size: 11px;
+}
+
+.profile strong {
+    display: block;
+    font-size: 10px;
+}
+
+.profile small {
+    display: block;
+    color: var(--muted);
+    font-size: 9px;
+    margin-top: 4px;
+}
+
+.profile-arrow {
+    margin-left: auto;
+    color: var(--muted);
+}
+
+/* MAIN */
+
+.main {
+    margin-left: 281px;
+    padding: 29px 32px;
+    width: calc(100% - 281px);
+    max-width: 1800px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 26px;
+}
+
+.breadcrumb {
+    color: #8991ae;
+    font-size: 10px;
+    margin-bottom: 7px;
+}
+
+.breadcrumb span {
+    color: var(--cyan);
+}
+
+.topbar h1 {
+    font-size: 24px;
+    letter-spacing: -.8px;
+}
+
+.top-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.date-chip,
+.notification {
+    background: rgba(255,255,255,.07);
+    border: 1px solid var(--border);
+    padding: 10px 13px;
+    border-radius: 10px;
+    color: #c6cbe0;
+    font-size: 10px;
+}
+
+.notification {
+    font-size: 17px;
+    position: relative;
+}
+
+.notification span {
+    width: 6px;
+    height: 6px;
+    position: absolute;
+    top: 7px;
+    right: 8px;
+    background: var(--pink);
+    border-radius: 50%;
+}
+
+.top-avatar {
+    width: 34px;
+    height: 34px;
+}
+
+/* WELCOME */
+
+.welcome {
+    min-height: 205px;
+    padding: 29px 32px;
+    border-radius: 17px;
+    border: 1px solid rgba(163,153,255,.25);
+    background:
+        radial-gradient(circle at 85% 20%, rgba(69,229,245,.2), transparent 30%),
+        linear-gradient(110deg, rgba(133,74,219,.22), rgba(31,158,195,.13)),
+        rgba(255,255,255,.045);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.eyebrow {
+    font-size: 9px;
+    color: var(--cyan);
+    font-weight: 700;
+    letter-spacing: 1.7px;
+}
+
+.welcome h2 {
+    font-size: 28px;
+    letter-spacing: -1px;
+    margin: 12px 0 9px;
+}
+
+.welcome h2 span {
+    color: var(--cyan);
+}
+
+.welcome p {
+    color: #aeb6d2;
+    font-size: 11px;
+    line-height: 1.8;
+    max-width: 430px;
+    margin-bottom: 18px;
+}
+
+.primary-btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 17px;
+    background: linear-gradient(110deg, var(--cyan), #b5a1ff);
+    color: #10162c;
+    font-weight: 700;
+    font-size: 11px;
+    transition: .25s;
+    box-shadow: 0 5px 22px rgba(69,229,245,.18);
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 25px rgba(69,229,245,.3);
+}
+
+/* ORBIT VISUAL */
+
+.welcome-visual {
+    width: 170px;
+    height: 150px;
+    position: relative;
+    margin-right: 45px;
+    flex-shrink: 0;
+}
+
+.orbit {
+    position: absolute;
+    border: 1px solid rgba(117,218,255,.3);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.orbit-one {
+    width: 120px;
+    height: 120px;
+}
+
+.orbit-two {
+    width: 165px;
+    height: 165px;
+    border-color: rgba(188,129,255,.24);
+}
+
+.orbit-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 65px;
+    height: 65px;
+    display: grid;
+    place-items: center;
+    border-radius: 20px;
+    font-size: 35px;
+    font-weight: 800;
+    color: #11152d;
+    background: linear-gradient(135deg,var(--cyan),var(--purple),var(--pink));
+    box-shadow: 0 0 35px rgba(69,229,245,.4);
+}
+
+.orbit-dot {
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    box-shadow: 0 0 15px currentColor;
+}
+
+.dot-one {
+    background: var(--cyan);
+    color: var(--cyan);
+    top: 12px;
+    left: 75px;
+}
+
+.dot-two {
+    background: var(--pink);
+    color: var(--pink);
+    bottom: 18px;
+    right: 7px;
+}
+
+.dot-three {
+    background: var(--purple);
+    color: var(--purple);
+    left: 4px;
+    bottom: 35px;
+}
+
+/* STATISTICS */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 14px;
+    margin-bottom: 19px;
+}
+
+.stat-card {
+    border-radius: 13px;
+    padding: 17px;
+    transition: .25s;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    background: rgba(255,255,255,.10);
+}
+
+.stat-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #aeb6d0;
+    font-size: 10px;
+}
+
+.stat-icon {
+    font-size: 19px;
+}
+
+.stat-card h2 {
+    font-size: 27px;
+    margin: 13px 0 5px;
+    letter-spacing: -.8px;
+}
+
+.stat-card small {
+    color: #929bb8;
+    font-size: 9px;
+}
+
+.cyan-card { border-top: 2px solid var(--cyan); }
+.purple-card { border-top: 2px solid var(--purple); }
+.pink-card { border-top: 2px solid var(--pink); }
+.orange-card { border-top: 2px solid var(--orange); }
+
+.cyan-card .stat-icon { color: var(--cyan); }
+.purple-card .stat-icon { color: var(--purple); }
+.pink-card .stat-icon { color: var(--pink); }
+.orange-card .stat-icon { color: var(--orange); }
+
+.status-online {
+    color: var(--green);
+    font-size: 22px !important;
+}
+
+/* DASHBOARD GRID */
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 16px;
+    margin-bottom: 31px;
+}
+
+.glass-panel {
+    border-radius: 14px;
+    padding: 21px;
+    min-width: 0;
+}
+
+.panel-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 19px;
+}
+
+.panel-heading h3 {
+    font-size: 15px;
+    margin-top: 7px;
+}
+
+.text-link {
+    font-size: 10px;
+    color: var(--cyan);
+}
+
+/* SERVICE LIST */
+
+.service-list {
+    display: grid;
+    gap: 7px;
+}
+
+.service-row {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 9px 7px;
+    border-radius: 9px;
+    transition: .2s;
+}
+
+.service-row:hover {
+    background: rgba(255,255,255,.05);
+}
+
+.service-icon {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border-radius: 11px;
+    font-size: 17px;
+    background: rgba(255,255,255,.07);
+}
+
+.service-icon.cyan { color: var(--cyan); background: rgba(69,229,245,.12); }
+.service-icon.purple { color: var(--purple); background: rgba(162,118,255,.13); }
+.service-icon.pink { color: var(--pink); background: rgba(239,107,201,.12); }
+.service-icon.orange { color: var(--orange); background: rgba(255,174,112,.12); }
+.service-icon.green { color: var(--green); background: rgba(92,230,177,.12); }
+
+.service-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.service-info strong {
+    display: block;
+    font-size: 10px;
+    margin-bottom: 5px;
+}
+
+.service-info small {
+    color: var(--muted);
+    font-size: 9px;
+}
+
+.service-count {
+    color: var(--cyan);
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+
+/* ACTIVITY CHART */
+
+.live-badge {
+    font-size: 9px;
+    color: var(--green);
+    background: rgba(92,230,177,.1);
+    border: 1px solid rgba(92,230,177,.18);
+    padding: 6px 9px;
+    border-radius: 20px;
+}
+
+.activity-chart {
+    height: 150px;
+    display: flex;
+    align-items: end;
+    justify-content: space-around;
+    gap: 9px;
+    padding: 15px 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 35px,
+        rgba(255,255,255,.045) 36px
+    );
+}
+
+.chart-bar {
+    width: 13px;
+    height: var(--bar);
+    border-radius: 8px 8px 3px 3px;
+    background: linear-gradient(
+        to top,
+        var(--cyan),
+        var(--purple),
+        var(--pink)
+    );
+    box-shadow: 0 0 13px rgba(162,118,255,.18);
+    transition: .25s;
+}
+
+.chart-bar:hover {
+    filter: brightness(1.4);
+    transform: scaleX(1.2);
+}
+
+.chart-labels {
+    display: flex;
+    justify-content: space-between;
+    color: #858eac;
+    font-size: 9px;
+    padding: 9px 2px;
+}
+
+.activity-footer {
+    border-top: 1px solid rgba(255,255,255,.08);
+    margin-top: 12px;
+    padding-top: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.activity-footer strong {
+    display: block;
+    font-size: 10px;
+}
+
+.activity-footer small {
+    display: block;
+    color: var(--muted);
+    font-size: 9px;
+    margin-top: 4px;
+}
+
+.gradient-text {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    background: linear-gradient(90deg,var(--cyan),var(--pink));
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+/* SECTION HEADINGS */
+
+.section-block {
+    margin-top: 30px;
+    scroll-margin-top: 20px;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 17px;
+}
+
+.section-heading h2 {
+    font-size: 21px;
+    margin: 8px 0 5px;
+    letter-spacing: -.6px;
+}
+
+.section-heading p {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+/* SERVICE CARDS */
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 14px;
+}
+
+.service-card {
+    padding: 19px;
+    border-radius: 13px;
+    position: relative;
+    overflow: hidden;
+    transition: .25s;
+}
+
+.service-card::after {
+    content: "";
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    right: -50px;
+    top: -50px;
+    border-radius: 50%;
+    background: rgba(69,229,245,.08);
+    filter: blur(20px);
+    pointer-events: none;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(69,229,245,.35);
+    background: rgba(255,255,255,.095);
+    box-shadow: 0 15px 35px rgba(0,0,0,.2);
+}
+
+.service-card .service-icon {
+    width: 42px;
+    height: 42px;
+    margin-bottom: 15px;
+    font-size: 19px;
+}
+
+.service-card h3 {
+    font-size: 12px;
+    margin-bottom: 7px;
+}
+
+.service-card p {
+    color: var(--muted);
+    font-size: 9px;
+    line-height: 1.8;
+    min-height: 34px;
+}
+
+.service-card > span {
+    display: block;
+    border-top: 1px solid rgba(255,255,255,.09);
+    margin-top: 14px;
+    padding-top: 12px;
+    font-size: 8px;
+    letter-spacing: 1px;
+    color: var(--cyan);
+}
+
+/* JOIN QUEUE */
+
+.join-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-panel label {
+    display: block;
+    color: #c5cce0;
+    font-size: 10px;
+    font-weight: 600;
+    margin: 15px 0 8px;
+}
+
+.form-panel input,
+.form-panel select {
+    width: 100%;
+    padding: 13px;
+    color: white;
+    background: rgba(4,8,24,.55);
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 8px;
+    outline: none;
+    font-size: 11px;
+    transition: .2s;
+}
+
+.form-panel input:focus,
+.form-panel select:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 3px rgba(69,229,245,.08);
+}
+
+.form-panel input::placeholder {
+    color: #737d9d;
+}
+
+.form-panel select option {
+    background: #15182f;
+    color: white;
+}
+
+.full-btn {
+    width: 100%;
+    margin-top: 19px;
+}
+
+.message {
+    color: var(--cyan);
+    font-size: 10px;
+    margin-top: 12px;
+}
+
+.token-panel {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background:
+        radial-gradient(circle at center, rgba(69,229,245,.12), transparent 60%),
+        var(--glass);
+    border-color: rgba(69,229,245,.23);
+}
+
+.token-symbol {
+    width: 54px;
+    height: 54px;
+    display: grid;
+    place-items: center;
+    margin: 17px 0;
+    border-radius: 16px;
+    background: linear-gradient(135deg,var(--cyan),var(--purple),var(--pink));
+    color: #11162c;
+    font-size: 26px;
+    font-weight: 800;
+    box-shadow: 0 0 30px rgba(69,229,245,.23);
+}
+
+.token-panel > p {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.token-panel h2 {
+    color: var(--cyan);
+    font-size: 35px;
+    letter-spacing: 2px;
+    margin: 9px 0;
+}
+
+.token-divider {
+    width: 70%;
+    height: 1px;
+    background: rgba(255,255,255,.13);
+    margin: 14px 0;
+}
+
+.token-panel .token-note {
+    max-width: 240px;
+    line-height: 1.8;
+}
+
+/* OPERATOR */
+
+.operator-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background:
+        radial-gradient(circle at 20% 50%,rgba(162,118,255,.12),transparent 45%),
+        var(--glass);
+}
+
+.operator-current h2 {
+    font-size: 36px;
+    color: var(--cyan);
+    margin: 9px 0;
+}
+
+.operator-current p {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.operator-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.secondary-btn,
+.danger-btn {
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 10px;
+    font-weight: 700;
+    transition: .2s;
+}
+
+.secondary-btn {
+    color: var(--cyan);
+    border: 1px solid rgba(69,229,245,.25);
+    background: rgba(69,229,245,.1);
+}
+
+.secondary-btn:hover {
+    background: rgba(69,229,245,.2);
+}
+
+.danger-btn {
+    color: #ff9bac;
+    border: 1px solid rgba(255,100,130,.2);
+    background: rgba(255,100,130,.1);
+}
+
+.waiting-panel {
+    margin-top: 15px;
+}
+
+.waiting-list {
+    list-style: none;
+    display: grid;
+    gap: 8px;
+}
+
+.waiting-list li {
+    border: 1px solid rgba(255,255,255,.09);
+    background: rgba(255,255,255,.035);
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 10px;
+    color: #d9def1;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 25px 10px;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.empty-icon {
+    font-size: 28px;
+    color: var(--purple);
+    margin-bottom: 12px;
+}
+
+.empty-state h3 {
+    color: var(--white);
+    font-size: 13px;
+    margin-bottom: 7px;
+}
+
+/* FOOTER */
+
+footer {
+    text-align: center;
+    color: #6f7897;
+    font-size: 8px;
+    letter-spacing: 1.4px;
+    padding: 30px 0 12px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1100px) {
+    .sidebar {
+        width: 210px;
+    }
+
+    .main {
+        margin-left: 245px;
+        width: calc(100% - 245px);
+        padding: 24px 20px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .services-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+}
+
+@media(max-width:760px) {
+    .app {
+        display: block;
+    }
+
+    .sidebar {
+        position: relative;
+        width: auto;
+        inset: auto;
+        margin: 10px;
+        padding: 17px;
+    }
+
+    .brand {
+        padding-bottom: 18px;
+    }
+
+    .sidebar nav {
+        display: flex;
+        overflow-x: auto;
+        gap: 5px;
+    }
+
+    .nav-link {
+        flex-shrink: 0;
+        white-space: nowrap;
+        padding: 10px;
+    }
+
+    .menu-label,
+    .sidebar-bottom {
+        display: none;
+    }
+
+    .main {
+        margin: 0;
+        width: 100%;
+        padding: 17px 13px;
+    }
+
+    .topbar h1 {
+        font-size: 18px;
+    }
+
+    .date-chip {
+        display: none;
+    }
+
+    .welcome {
+        padding: 23px;
+    }
+
+    .welcome h2 {
+        font-size: 23px;
+    }
+
+    .welcome-visual {
+        display: none;
+    }
+
+    .dashboard-grid,
+    .join-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .services-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .glass-panel {
+        padding: 16px;
+    }
+
+    .operator-panel {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+@media(max-width:420px) {
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+        gap: 9px;
+    }
+
+    .stat-card {
+        padding: 13px;
+    }
+
+    .stat-card h2 {
+        font-size: 22px;
+    }
+
+    .top-actions {
+        gap: 6px;
+    }
+
+    .welcome h2 {
+        font-size: 21px;
+    }
+}
