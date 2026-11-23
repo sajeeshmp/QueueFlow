@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f5fc">
+  <title>Join Queue | QueueFlow</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'DM Sans',sans-serif;background:#f7f5fc;color:#302747;min-height:100vh}
+    button,a{font-family:inherit}
+    a{text-decoration:none;color:inherit}
+    .topbar{height:75px;background:white;border-bottom:1px solid #eeeaf5;display:flex;align-items:center;justify-content:space-between;padding:0 6%;position:sticky;top:0;z-index:5}
+    .brand{display:flex;align-items:center;gap:10px;font-family:'Outfit',sans-serif;font-size:24px;font-weight:800}
+    .brand-icon{width:39px;height:39px;border-radius:13px;background:linear-gradient(135deg,#a88af7,#7048d0);display:grid;place-items:center;color:white}
+    .brand span:last-child{color:#7048d0}
+    .back{font-size:12px;font-weight:700;color:#7956c9}
+    .container{max-width:1050px;margin:45px auto;padding:0 22px}
+    .heading{margin-bottom:28px}
+    .tag{display:inline-block;background:#eee8ff;color:#7956c9;border-radius:30px;padding:8px 13px;font-size:10px;font-weight:800;letter-spacing:.8px;margin-bottom:14px}
+    h1{font-family:'Outfit',sans-serif;font-size:34px;letter-spacing:-1px;margin-bottom:8px}
+    .heading p{font-size:13px;color:#91889e}
+    .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:22px;align-items:start}
+    .panel{background:white;border:1px solid #eeeaf5;border-radius:21px;padding:25px;box-shadow:0 12px 35px rgba(80,60,130,.035)}
+    .panel h2{font-family:'Outfit',sans-serif;font-size:19px;margin-bottom:7px}
+    .sub{font-size:11px;color:#a39aac;margin-bottom:22px}
+    .services{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .service{border:1px solid #eeeaf5;border-radius:14px;padding:15px;text-align:left;background:#fff;cursor:pointer;transition:.2s;color:#302747}
+    .service:hover{border-color:#b9a3ee;background:#faf8ff}
+    .service.selected{border:2px solid #9573e5;background:#f6f2ff;padding:14px}
+    .service-icon{width:37px;height:37px;background:#f0eaff;border-radius:11px;display:grid;place-items:center;font-size:19px;margin-bottom:12px}
+    .service strong{font-size:12px;display:block}
+    .service small{font-size:10px;color:#a39aac;display:block;margin-top:5px}
+    .join-btn{width:100%;padding:15px;border:0;border-radius:13px;background:linear-gradient(110deg,#a083ef,#7048cf);color:white;font-size:13px;font-weight:800;margin-top:22px;box-shadow:0 9px 20px rgba(125,85,215,.2)}
+    .join-btn:disabled{opacity:.55;cursor:not-allowed}
+    .notice{font-size:10px;color:#a39aac;text-align:center;margin-top:13px;line-height:1.6}
+    .queue-card{background:linear-gradient(145deg,#8965e8,#6844c5);border-radius:19px;padding:23px;color:white;margin-bottom:17px}
+    .queue-card .small{font-size:10px;opacity:.8;font-weight:700;letter-spacing:.8px}
+    .token{font-family:'Outfit',sans-serif;font-size:47px;font-weight:800;margin:10px 0}
+    .queue-card p{font-size:11px;opacity:.85}
+    .queue-info{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .info{background:#faf9fd;border:1px solid #f0edf5;padding:14px;border-radius:13px}
+    .info small{font-size:10px;color:#a39aac}
+    .info strong{display:block;font-size:18px;margin-top:6px}
+    .empty{text-align:center;padding:25px 10px;color:#a39aac}
+    .empty span{font-size:34px;display:block;margin-bottom:12px}
+    .empty strong{display:block;font-size:13px;color:#625875;margin-bottom:7px}
+    .empty p{font-size:11px;line-height:1.6}
+    .message{display:none;margin-top:15px;padding:12px;border-radius:11px;font-size:11px;line-height:1.6}
+    .message.error{display:block;background:#fff0f0;color:#b33d4a}
+    .message.success{display:block;background:#eafaf2;color:#23865d}
+    .cancel{border:1px solid #f0d5d8;background:#fff7f7;color:#bd5360;width:100%;padding:12px;border-radius:11px;font-size:11px;font-weight:800;margin-top:15px}
+    .cancel:disabled{opacity:.6}
+    .footer{text-align:center;font-size:10px;color:#aaa1b5;margin:35px 0}
+    @media(max-width:750px){.grid{grid-template-columns:1fr}.container{margin:30px auto}.topbar{padding:0 20px}}
+    @media(max-width:450px){h1{font-size:28px}.panel{padding:18px}.services{gap:9px}.service{padding:12px}.service.selected{padding:11px}}
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="dashboard.html" class="brand">
+    <span class="brand-icon">⌘</span>
+    Queue<span>Flow</span>
+  </a>
+  <a href="dashboard.html" class="back">← Dashboard</a>
+</header>
+
+<main class="container">
+  <section class="heading">
+    <span class="tag">CAMPUS QUEUE SYSTEM</span>
+    <h1>Join a Queue</h1>
+    <p>Select a campus service and get your digital token instantly.</p>
+  </section>
+
+  <div class="grid">
+    <section class="panel">
+      <h2>Select a service</h2>
+      <p class="sub">Choose the department you want to visit.</p>
+
+      <div class="services" id="services">
+        <button class="service" data-service="canteen">
+          <span class="service-icon">🍽️</span>
+          <strong>Canteen</strong>
+          <small>Food and refreshments</small>
+        </button>
+
+        <button class="service" data-service="office">
+          <span class="service-icon">🏢</span>
+          <strong>Office / Administration</strong>
+          <small>General administration</small>
+        </button>
+
+        <button class="service" data-service="library">
+          <span class="service-icon">📚</span>
+          <strong>Library</strong>
+          <small>Library services</small>
+        </button>
+
+        <button class="service" data-service="accounts">
+          <span class="service-icon">💳</span>
+          <strong>Accounts / Fees</strong>
+          <small>Fees and payments</small>
+        </button>
+
+        <button class="service" data-service="laboratory">
+          <span class="service-icon">🧪</span>
+          <strong>Laboratory</strong>
+          <small>Lab assistance</small>
+        </button>
+
+        <button class="service" data-service="student-section">
+          <span class="service-icon">🎓</span>
+          <strong>Student Section</strong>
+          <small>Certificates and records</small>
+        </button>
+
+        <button class="service" data-service="placement">
+          <span class="service-icon">💼</span>
+          <strong>Placement Cell</strong>
+          <small>Career assistance</small>
+        </button>
+
+        <button class="service" data-service="hostel">
+          <span class="service-icon">🏠</span>
+          <strong>Hostel Office</strong>
+          <small>Hostel assistance</small>
+        </button>
+      </div>
+
+      <button class="join-btn" id="joinButton" disabled>Select a service first →</button>
+      <p class="notice">Your token will be generated using the centralized campus queue.</p>
+      <div id="message" class="message" role="alert"></div>
+    </section>
+
+    <aside class="panel">
+      <h2>My Queue Status</h2>
+      <p class="sub">Your currently active token.</p>
+
+      <div id="activeToken">
+        <div class="empty">
+          <span>🎟️</span>
+          <strong>No active token</strong>
+          <p>Join a campus queue to see your token and waiting position here.</p>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="footer">QueueFlow · Smart Campus Queue Management System</div>
+</main>
+
+<script type="module" src="./js/queue.js"></script>
+</body>
+</html>
