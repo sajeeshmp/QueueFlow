@@ -4,263 +4,1276 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#100d1c">
-  <meta name="description" content="QueueFlow - Smart Campus Queue Management System">
-  <title>QueueFlow | Smart Campus</title>
+  <meta name="theme-color" content="#f5f1ff">
+  <meta name="description" content="QueueFlow - Smart Campus Queue Management. Skip the wait and manage your campus time smarter.">
+
+  <title>QueueFlow | Smart Campus Queue Management</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #8965e8;
+      --primary-dark: #7048d0;
+      --lavender: #eee8ff;
+      --lavender-light: #f7f4ff;
+      --text: #28213d;
+      --muted: #817a96;
+      --white: #ffffff;
+      --border: rgba(130, 103, 190, .13);
+      --shadow: 0 20px 60px rgba(93, 65, 157, .10);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #fbfaff;
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .background-glow {
+      position: fixed;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: .35;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .glow-one {
+      background: #d9c9ff;
+      top: 0;
+      left: -180px;
+    }
+
+    .glow-two {
+      background: #eadbff;
+      right: -200px;
+      top: 450px;
+    }
+
+    /* NAVBAR */
+
+    .navbar {
+      position: sticky;
+      top: 14px;
+      z-index: 100;
+      max-width: 1240px;
+      margin: 14px auto 0;
+      width: calc(100% - 40px);
+      min-height: 72px;
+      padding: 12px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255,255,255,.78);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 20px;
+      box-shadow: 0 8px 35px rgba(82,60,130,.08);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: -.8px;
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: linear-gradient(135deg, #a88af7, #7048d0);
+      border-radius: 14px;
+      font-size: 22px;
+      box-shadow: 0 6px 18px rgba(137,101,232,.3);
+    }
+
+    .brand span:last-child {
+      color: var(--primary-dark);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      color: #655d79;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 13px;
+      padding: 13px 21px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 14px;
+      transition: .25s ease;
+    }
+
+    .btn-primary {
+      color: white;
+      background: linear-gradient(135deg, #9a7bed, #7651d6);
+      box-shadow: 0 8px 20px rgba(125,85,215,.23);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 25px rgba(125,85,215,.32);
+    }
+
+    .btn-outline {
+      color: #7356bd;
+      background: white;
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      background: var(--lavender-light);
+    }
+
+    .menu-toggle {
+      display: none;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      font-size: 26px;
+      cursor: pointer;
+    }
+
+    /* HERO */
+
+    .hero {
+      max-width: 1240px;
+      margin: auto;
+      padding: 105px 25px 100px;
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      align-items: center;
+      gap: 65px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 15px;
+      color: #7656c5;
+      background: #f0eaff;
+      border: 1px solid #e8ddff;
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .6px;
+      margin-bottom: 25px;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: #36bd8a;
+      border-radius: 50%;
+      box-shadow: 0 0 0 4px rgba(54,189,138,.13);
+    }
+
+    .hero h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(43px, 5.5vw, 70px);
+      line-height: 1.08;
+      letter-spacing: -2.8px;
+      font-weight: 800;
+      margin-bottom: 25px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(110deg, #a181f3, #7047cd);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-description {
+      max-width: 520px;
+      color: var(--muted);
+      line-height: 1.85;
+      font-size: 16px;
+      margin-bottom: 32px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 13px;
+    }
+
+    .hero-buttons .btn {
+      padding: 16px 24px;
+    }
+
+    .hero-note {
+      margin-top: 27px;
+      color: #918aa3;
+      font-size: 12px;
+    }
+
+    .hero-note span {
+      color: #7151c3;
+      font-weight: 700;
+    }
+
+    /* DASHBOARD PREVIEW */
+
+    .preview-wrapper {
+      position: relative;
+      padding: 18px;
+    }
+
+    .preview-glow {
+      position: absolute;
+      inset: 10%;
+      background: #bca4fa;
+      filter: blur(90px);
+      opacity: .35;
+      z-index: -1;
+    }
+
+    .preview-card {
+      padding: 23px;
+      background: rgba(255,255,255,.78);
+      backdrop-filter: blur(25px);
+      border: 1px solid white;
+      border-radius: 27px;
+      box-shadow: var(--shadow);
+      transform: rotate(1deg);
+      animation: float 5s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(1deg); }
+      50% { transform: translateY(-12px) rotate(1deg); }
+    }
+
+    .preview-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 25px;
+    }
+
+    .preview-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    .online-badge {
+      color: #259d70;
+      background: #e8faf2;
+      padding: 7px 11px;
+      border-radius: 50px;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .preview-greeting {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    .preview-name {
+      font-family: 'Outfit', sans-serif;
+      font-size: 23px;
+      margin-bottom: 20px;
+    }
+
+    .preview-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .stat-box {
+      background: #f7f4ff;
+      padding: 17px;
+      border: 1px solid #eee8ff;
+      border-radius: 17px;
+    }
+
+    .stat-box small {
+      color: #88809c;
+      font-size: 11px;
+    }
+
+    .stat-box h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 27px;
+      margin-top: 7px;
+      color: #7653cf;
+    }
+
+    .active-token {
+      background: linear-gradient(135deg, #9471e8, #7751d3);
+      padding: 23px;
+      color: white;
+      border-radius: 20px;
+      margin-top: 12px;
+    }
+
+    .token-label {
+      font-size: 11px;
+      color: #e8ddff;
+    }
+
+    .token-number {
+      font-family: 'Outfit', sans-serif;
+      font-size: 36px;
+      font-weight: 800;
+      margin: 5px 0 14px;
+    }
+
+    .token-progress {
+      height: 6px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.25);
+      overflow: hidden;
+      margin: 13px 0;
+    }
+
+    .token-progress div {
+      width: 65%;
+      height: 100%;
+      background: white;
+      border-radius: 10px;
+    }
+
+    .token-bottom {
+      display: flex;
+      justify-content: space-between;
+      color: #eee7ff;
+      font-size: 11px;
+    }
+
+    .floating-tag {
+      position: absolute;
+      bottom: 3px;
+      left: -18px;
+      padding: 15px 19px;
+      background: rgba(255,255,255,.94);
+      border: 1px solid white;
+      box-shadow: var(--shadow);
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #7151c3;
+    }
+
+    /* COMMON SECTIONS */
+
+    .section {
+      padding: 90px 25px;
+    }
+
+    .section-container {
+      max-width: 1160px;
+      margin: auto;
+    }
+
+    .section-heading {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 48px;
+    }
+
+    .section-heading .eyebrow {
+      margin-bottom: 15px;
+    }
+
+    .section-heading h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(30px, 4vw, 43px);
+      letter-spacing: -1.4px;
+      margin-bottom: 14px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    /* SERVICES */
+
+    .services {
+      background: linear-gradient(180deg, #f5f1ff, #fbfaff);
+    }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 17px;
+    }
+
+    .service-card {
+      padding: 24px 20px;
+      background: rgba(255,255,255,.82);
+      border: 1px solid white;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(80,55,130,.045);
+      transition: .3s ease;
+    }
+
+    .service-card:hover {
+      transform: translateY(-7px);
+      box-shadow: var(--shadow);
+      border-color: #e3d7ff;
+    }
+
+    .service-icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      background: #f0eaff;
+      color: #805bd6;
+      border-radius: 15px;
+      font-size: 23px;
+      margin-bottom: 18px;
+    }
+
+    .service-card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .service-card p {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* HOW IT WORKS */
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+    }
+
+    .step-card {
+      text-align: center;
+      padding: 32px 24px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: 0 8px 30px rgba(80,55,130,.04);
+    }
+
+    .step-number {
+      width: 60px;
+      height: 60px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 20px;
+      color: white;
+      font-family: 'Outfit', sans-serif;
+      font-size: 23px;
+      font-weight: 800;
+      border-radius: 19px;
+      background: linear-gradient(135deg, #a68af2, #7651d3);
+    }
+
+    .step-card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 19px;
+      margin-bottom: 11px;
+    }
+
+    .step-card p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    /* FEATURES */
+
+    .features {
+      background: #f5f1ff;
+    }
+
+    .feature-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 55px;
+      align-items: center;
+    }
+
+    .feature-content h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 42px;
+      line-height: 1.18;
+      letter-spacing: -1.5px;
+      margin-bottom: 20px;
+    }
+
+    .feature-content > p {
+      color: var(--muted);
+      line-height: 1.85;
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+
+    .feature-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .check {
+      width: 23px;
+      height: 23px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      color: #7651d3;
+      background: #e7dcff;
+      border-radius: 50%;
+    }
+
+    .feature-visual {
+      padding: 30px;
+      background: rgba(255,255,255,.75);
+      border: 1px solid white;
+      border-radius: 25px;
+      box-shadow: var(--shadow);
+    }
+
+    .queue-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+      border-bottom: 1px solid #f0ecf7;
+    }
+
+    .queue-row:last-child {
+      border: 0;
+    }
+
+    .queue-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .queue-avatar {
+      width: 39px;
+      height: 39px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      background: #f0eaff;
+      color: #7651d3;
+      font-size: 17px;
+    }
+
+    .queue-left strong {
+      font-size: 13px;
+      display: block;
+    }
+
+    .queue-left small {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .queue-status {
+      color: #2a9d70;
+      background: #e8faf2;
+      border-radius: 30px;
+      padding: 7px 10px;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    /* CTA */
+
+    .cta {
+      padding: 75px 25px;
+    }
+
+    .cta-card {
+      max-width: 1160px;
+      margin: auto;
+      padding: 65px 30px;
+      text-align: center;
+      color: white;
+      border-radius: 30px;
+      background: linear-gradient(120deg, #a083ef, #7048cf);
+      box-shadow: 0 20px 50px rgba(116,77,207,.2);
+    }
+
+    .cta-card h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(30px, 4vw, 43px);
+      margin-bottom: 15px;
+    }
+
+    .cta-card p {
+      color: #eee6ff;
+      font-size: 14px;
+      margin-bottom: 27px;
+      line-height: 1.8;
+    }
+
+    .cta-card .btn {
+      background: white;
+      color: #7048cf;
+      padding: 15px 26px;
+    }
+
+    /* FOOTER */
+
+    footer {
+      background: #29213e;
+      color: white;
+      padding: 45px 25px 25px;
+    }
+
+    .footer-inner {
+      max-width: 1160px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 25px;
+      flex-wrap: wrap;
+      padding-bottom: 30px;
+    }
+
+    .footer-brand p {
+      color: #b8aecb;
+      font-size: 12px;
+      margin-top: 10px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 25px;
+      flex-wrap: wrap;
+      color: #d1c8e1;
+      font-size: 12px;
+    }
+
+    .footer-links a:hover {
+      color: white;
+    }
+
+    .copyright {
+      max-width: 1160px;
+      margin: auto;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,.1);
+      text-align: center;
+      color: #a69bb9;
+      font-size: 11px;
+    }
+
+    /* REVEAL ANIMATION */
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(25px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 35px;
+        padding-top: 75px;
+      }
+
+      .hero-content {
+        text-align: center;
+      }
+
+      .hero-description {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-buttons {
+        justify-content: center;
+      }
+
+      .preview-wrapper {
+        max-width: 550px;
+        width: 100%;
+        margin: auto;
+      }
+
+      .service-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .feature-layout {
+        grid-template-columns: 1fr;
+        gap: 35px;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .navbar {
+        padding: 10px 14px;
+      }
+
+      .brand {
+        font-size: 21px;
+      }
+
+      .brand-icon {
+        width: 38px;
+        height: 38px;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 82px;
+        left: 0;
+        width: 100%;
+        padding: 22px;
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 20px;
+        box-shadow: var(--shadow);
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-actions .btn-outline {
+        display: none;
+      }
+
+      .nav-actions .btn {
+        padding: 11px 14px;
+        font-size: 12px;
+      }
+
+      .hero {
+        padding: 70px 20px 65px;
+      }
+
+      .hero h1 {
+        letter-spacing: -1.8px;
+      }
+
+      .section {
+        padding: 65px 20px;
+      }
+
+      .service-grid {
+        gap: 11px;
+      }
+
+      .service-card {
+        padding: 18px 14px;
+      }
+
+      .service-card h3 {
+        font-size: 14px;
+      }
+
+      .steps-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-content h2 {
+        font-size: 34px;
+      }
+
+      .feature-list {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-visual {
+        padding: 18px;
+      }
+
+      .floating-tag {
+        left: -4px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  <div class="ambient ambient-one"></div>
-  <div class="ambient ambient-two"></div>
 
-  <div class="app-shell">
-    <aside class="sidebar" id="sidebar">
-      <a class="brand" href="#" onclick="showPage('dashboard');return false">
-        <div class="brand-mark"><i class="fa-solid fa-layer-group"></i></div>
-        <div>
-          <span class="brand-name">Queue<span>Flow</span></span>
-          <small>CAMPUS MANAGEMENT</small>
+  <div class="background-glow glow-one"></div>
+  <div class="background-glow glow-two"></div>
+
+  <!-- NAVIGATION -->
+
+  <nav class="navbar">
+    <a href="#" class="brand">
+      <span class="brand-icon">⌘</span>
+      Queue<span>Flow</span>
+    </a>
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false">
+      ☰
+    </button>
+
+    <div class="nav-links" id="navLinks">
+      <a href="#home">Home</a>
+      <a href="#services">Services</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#features">Features</a>
+    </div>
+
+    <div class="nav-actions">
+      <a href="login.html" class="btn btn-outline">Login</a>
+      <a href="register.html" class="btn btn-primary">Get Started ↗</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+
+  <main>
+    <section class="hero" id="home">
+
+      <div class="hero-content">
+        <div class="eyebrow">
+          <span class="live-dot"></span>
+          SMART CAMPUS EXPERIENCE
         </div>
-      </a>
 
-      <div class="side-label">WORKSPACE</div>
-      <nav class="nav-menu">
-        <button class="nav-link active" data-page="dashboard" onclick="showPage('dashboard')">
-          <i class="fa-solid fa-grid-2"></i><span>Overview</span>
-        </button>
-        <button class="nav-link" data-page="services" onclick="showPage('services')">
-          <i class="fa-solid fa-building"></i><span>Campus services</span>
-          <span class="nav-count">10</span>
-        </button>
-        <button class="nav-link" data-page="student" onclick="showPage('student')">
-          <i class="fa-solid fa-ticket"></i><span>Get a token</span>
-        </button>
-        <button class="nav-link" data-page="operator" onclick="showPage('operator')">
-          <i class="fa-solid fa-headset"></i><span>Operator console</span>
-        </button>
-        <button class="nav-link" data-page="history" onclick="showPage('history')">
-          <i class="fa-solid fa-clock-rotate-left"></i><span>Queue history</span>
-        </button>
-      </nav>
+        <h1>
+          Skip the wait.<br>
+          <span class="gradient-text">Own your time.</span>
+        </h1>
 
-      <div class="side-label side-label-second">SYSTEM</div>
-      <div class="system-card">
-        <div class="system-top">
-          <span class="status-dot"></span>
-          <span>System operational</span>
+        <p class="hero-description">
+          Say goodbye to endless campus queues. Generate digital
+          tokens, track your position in real time and spend your
+          valuable time doing what actually matters.
+        </p>
+
+        <div class="hero-buttons">
+          <a href="register.html" class="btn btn-primary">
+            Get Started <span>→</span>
+          </a>
+
+          <a href="#how-it-works" class="btn btn-outline">
+            Explore how it works
+          </a>
         </div>
-        <p>QueueFlow is running smoothly in this browser.</p>
-        <div class="system-line"><span></span></div>
+
+        <p class="hero-note">
+          Designed for modern campuses · <span>Powered by smart queue management</span>
+        </p>
       </div>
 
-      <div class="sidebar-bottom">
-        <div class="profile-avatar">Q</div>
-        <div class="profile-info">
-          <strong>Campus Admin</strong>
-          <small>Administrator</small>
+      <div class="preview-wrapper">
+        <div class="preview-glow"></div>
+
+        <div class="preview-card">
+
+          <div class="preview-top">
+            <div class="preview-title">QueueFlow Dashboard</div>
+            <div class="online-badge">● LIVE PREVIEW</div>
+          </div>
+
+          <p class="preview-greeting">Welcome back, Student!</p>
+          <h3 class="preview-name">Your campus at a glance.</h3>
+
+          <div class="preview-stats">
+            <div class="stat-box">
+              <small>Campus Services</small>
+              <h3>08</h3>
+            </div>
+
+            <div class="stat-box">
+              <small>Digital Tokens</small>
+              <h3>∞</h3>
+            </div>
+          </div>
+
+          <div class="active-token">
+            <div class="token-label">SAMPLE ACTIVE TOKEN</div>
+            <div class="token-number">QF-024</div>
+
+            <div class="token-bottom">
+              <span>Queue progress</span>
+              <span>65%</span>
+            </div>
+
+            <div class="token-progress">
+              <div></div>
+            </div>
+
+            <div class="token-bottom">
+              <span>People ahead: 3</span>
+              <span>Est. wait: 12 min</span>
+            </div>
+          </div>
+
         </div>
-        <i class="fa-solid fa-ellipsis"></i>
+
+        <div class="floating-tag">✦ Smarter waiting starts here</div>
       </div>
-    </aside>
 
-    <main class="main-area">
-      <header class="topbar">
-        <div class="topbar-left">
-          <button class="icon-button menu-toggle" id="menuToggle" aria-label="Toggle menu">
-            <i class="fa-solid fa-bars"></i>
-          </button>
-          <div>
-            <div class="breadcrumb">Workspace <span>/</span> <b id="breadcrumbName">Overview</b></div>
-            <div class="topbar-date" id="currentDate"></div>
-          </div>
+    </section>
+
+    <!-- SERVICES -->
+
+    <section class="section services" id="services">
+      <div class="section-container">
+
+        <div class="section-heading reveal">
+          <div class="eyebrow">CAMPUS SERVICES</div>
+          <h2>One platform. <span class="gradient-text">Every queue.</span></h2>
+          <p>
+            Access essential campus services through one centralized
+            digital queue management platform.
+          </p>
         </div>
-        <div class="topbar-actions">
-          <div class="live-pill"><span class="status-dot"></span> LIVE SYSTEM</div>
-          <button class="icon-button" onclick="showPage('history')" title="View activity">
-            <i class="fa-regular fa-bell"></i>
-          </button>
-          <div class="top-avatar">CA</div>
+
+        <div class="service-grid">
+
+          <article class="service-card reveal">
+            <div class="service-icon">☕</div>
+            <h3>Canteen</h3>
+            <p>Manage food counter queues and reduce unnecessary waiting.</p>
+          </article>
+
+          <article class="service-card reveal">
+            <div class="service-icon">🏢</div>
+            <h3>Administration</h3>
+            <p>Organize document submissions and administrative requests.</p>
+          </article>
+
+          <article class="service-card reveal">
+            <div class="service-icon">📚</div>
+            <h3>Library</h3>
+            <p>Manage library assistance and student service requests.</p>
+          </article>
+
+          <article class="service-card reveal">
+            <div class="service-icon">💳</div>
+            <h3>Accounts & Fees</h3>
+            <p>Make fee-related service queues more organized.</p>
+          </article>
+
+          <article class="service-card reveal">
+            <div class="service-icon">🧪</div>
+            <h3>Laboratory</h3>
+            <p>Coordinate laboratory assistance and equipment requests.</p>
+          </article>
+
+          <article class="service-card reveal">
+            <div class="service-icon">🎓</div>
+            <h3>Student Section</h3>
+            <p>Organize academic records and student support requests.</p>
+          </article>
+
+          <article class="service-card reveal">
+            <div class="service-icon">💼</div>
+            <h3>Placement Cell</h3>
+            <p>Manage placement-related enquiries and appointments.</p>
+          </article>
+
+          <article class="service-card reveal">
+            <div class="service-icon">🏠</div>
+            <h3>Hostel Office</h3>
+            <p>Streamline hostel-related enquiries and applications.</p>
+          </article>
+
         </div>
-      </header>
-
-      <div class="page-container">
-
-        <!-- DASHBOARD -->
-        <section class="page active" id="page-dashboard">
-          <div class="welcome-row">
-            <div>
-              <div class="eyebrow"><span class="eyebrow-line"></span> CAMPUS OVERVIEW</div>
-              <h1>Good day, <span class="gradient-text">Administrator.</span></h1>
-              <p class="subheading">Here's what's happening across your campus today.</p>
-            </div>
-            <button class="primary-button" onclick="showPage('student')">
-              <i class="fa-solid fa-plus"></i> Generate token
-            </button>
-          </div>
-
-          <div class="stats-grid">
-            <div class="stat-card">
-              <div class="stat-top"><span>Total departments</span><div class="stat-icon purple"><i class="fa-solid fa-building"></i></div></div>
-              <div class="stat-number" id="statDepartments">10</div>
-              <div class="stat-foot"><span class="stat-neutral">●</span> Active campus services</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-top"><span>People waiting</span><div class="stat-icon blue"><i class="fa-solid fa-users"></i></div></div>
-              <div class="stat-number" id="statWaiting">0</div>
-              <div class="stat-foot"><span class="stat-neutral">●</span> Across all departments</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-top"><span>Currently serving</span><div class="stat-icon pink"><i class="fa-solid fa-user-clock"></i></div></div>
-              <div class="stat-number" id="statServing">0</div>
-              <div class="stat-foot"><span class="stat-neutral">●</span> Active counters</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-top"><span>Completed today</span><div class="stat-icon green"><i class="fa-solid fa-check-double"></i></div></div>
-              <div class="stat-number" id="statCompleted">0</div>
-              <div class="stat-foot"><span class="stat-neutral">●</span> Successfully processed</div>
-            </div>
-          </div>
-
-          <div class="dashboard-grid">
-            <div class="glass-panel chart-panel">
-              <div class="panel-heading">
-                <div><h3>Queue activity</h3><p>Token activity across the campus</p></div>
-                <span class="panel-tag">TODAY</span>
-              </div>
-              <div class="chart-wrap"><canvas id="activityChart"></canvas></div>
-            </div>
-            <div class="glass-panel distribution-panel">
-              <div class="panel-heading"><div><h3>Queue distribution</h3><p>Waiting students by department</p></div></div>
-              <div id="distributionList" class="distribution-list"></div>
-            </div>
-          </div>
-
-          <div class="glass-panel service-overview">
-            <div class="panel-heading">
-              <div><h3>Department overview</h3><p>Monitor your campus service counters</p></div>
-              <button class="text-button" onclick="showPage('services')">View all <i class="fa-solid fa-arrow-right"></i></button>
-            </div>
-            <div class="table-scroll">
-              <table>
-                <thead><tr><th>DEPARTMENT</th><th>NOW SERVING</th><th>WAITING</th><th>STATUS</th><th></th></tr></thead>
-                <tbody id="overviewTable"></tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        <!-- SERVICES -->
-        <section class="page" id="page-services">
-          <div class="page-heading">
-            <div><div class="eyebrow">CAMPUS DIRECTORY</div><h1>Campus <span class="gradient-text">services.</span></h1><p class="subheading">Explore departments and their live queue status.</p></div>
-            <div class="heading-icon"><i class="fa-solid fa-building-user"></i></div>
-          </div>
-          <div class="filter-row">
-            <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="serviceSearch" type="text" placeholder="Search departments..." oninput="renderServices()"></div>
-            <span class="result-count" id="serviceCount">10 departments</span>
-          </div>
-          <div class="services-grid" id="servicesGrid"></div>
-        </section>
-
-        <!-- STUDENT PORTAL -->
-        <section class="page" id="page-student">
-          <div class="page-heading">
-            <div><div class="eyebrow">STUDENT PORTAL</div><h1>Skip the line. <span class="gradient-text">Not your turn.</span></h1><p class="subheading">Generate a digital token and keep track of your place in line.</p></div>
-            <div class="heading-icon"><i class="fa-solid fa-ticket"></i></div>
-          </div>
-          <div class="student-layout">
-            <div class="glass-panel form-panel">
-              <div class="form-heading"><div class="form-icon"><i class="fa-solid fa-ticket"></i></div><div><h3>Get your queue token</h3><p>Fill in your details to join a queue.</p></div></div>
-              <form id="tokenForm">
-                <label for="studentName">Student name</label>
-                <input id="studentName" type="text" placeholder="Enter your full name" required maxlength="60">
-                <label for="studentId">Student ID <span class="optional">(optional)</span></label>
-                <input id="studentId" type="text" placeholder="e.g. 1EP23CS001" maxlength="30">
-                <label for="studentService">Select department</label>
-                <select id="studentService" required></select>
-                <div class="form-note"><i class="fa-solid fa-circle-info"></i> Your token will be added to the selected department's independent queue.</div>
-                <button class="primary-button full-button" type="submit"><i class="fa-solid fa-bolt"></i> Generate my token</button>
-              </form>
-            </div>
-            <div class="student-side">
-              <div class="glass-panel how-panel">
-                <h3>How it works</h3>
-                <div class="step-item"><div class="step-number">01</div><div><strong>Choose a department</strong><p>Select the service you need.</p></div></div>
-                <div class="step-item"><div class="step-number">02</div><div><strong>Generate your token</strong><p>Get your unique digital queue number.</p></div></div>
-                <div class="step-item"><div class="step-number">03</div><div><strong>Track your position</strong><p>Watch your queue status update.</p></div></div>
-              </div>
-              <div class="glass-panel tip-panel"><i class="fa-solid fa-lightbulb"></i><div><strong>Smart queueing</strong><p>Each department operates independently. Joining one queue does not affect another.</p></div></div>
-            </div>
-          </div>
-          <div class="glass-panel token-result hidden" id="tokenResult"></div>
-          <div class="glass-panel my-tokens-panel">
-            <div class="panel-heading"><div><h3>Recent tokens</h3><p>Tokens generated in this browser</p></div></div>
-            <div id="recentTokens" class="recent-tokens"></div>
-          </div>
-        </section>
-
-        <!-- OPERATOR -->
-        <section class="page" id="page-operator">
-          <div class="page-heading">
-            <div><div class="eyebrow">CONTROL CENTRE</div><h1>Operator <span class="gradient-text">console.</span></h1><p class="subheading">Manage department queues and process student requests.</p></div>
-            <div class="heading-icon"><i class="fa-solid fa-headset"></i></div>
-          </div>
-          <div class="operator-select glass-panel">
-            <div><label for="operatorService">Active department</label><p>Select the counter you want to manage.</p></div>
-            <select id="operatorService" onchange="renderOperator()"></select>
-          </div>
-          <div class="operator-grid">
-            <div class="glass-panel now-serving-panel">
-              <div class="panel-heading"><div><h3>Now serving</h3><p>Current active token</p></div><span class="live-pill"><span class="status-dot"></span> LIVE</span></div>
-              <div id="currentToken" class="current-token"></div>
-              <div class="operator-actions">
-                <button class="primary-button" id="callNextBtn" onclick="callNext()"><i class="fa-solid fa-bullhorn"></i> Call next</button>
-                <button class="secondary-button" id="completeBtn" onclick="completeCurrent()"><i class="fa-solid fa-check"></i> Complete</button>
-              </div>
-              <p class="operator-hint" id="operatorHint">Select a department to begin.</p>
-            </div>
-            <div class="glass-panel waiting-panel">
-              <div class="panel-heading"><div><h3>Waiting queue</h3><p>Students waiting for their turn</p></div><span class="queue-count" id="operatorWaitingCount">0</span></div>
-              <div id="operatorWaitingList" class="waiting-list"></div>
-            </div>
-          </div>
-        </section>
-
-        <!-- HISTORY -->
-        <section class="page" id="page-history">
-          <div class="page-heading">
-            <div><div class="eyebrow">ACTIVITY LOG</div><h1>Queue <span class="gradient-text">history.</span></h1><p class="subheading">Review generated, called and completed tokens.</p></div>
-            <div class="heading-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
-          </div>
-          <div class="history-summary" id="historySummary"></div>
-          <div class="glass-panel history-panel">
-            <div class="panel-heading"><div><h3>All transactions</h3><p>Activity recorded in this browser</p></div><button class="secondary-button small-button" onclick="exportHistory()"><i class="fa-solid fa-download"></i> Export CSV</button></div>
-            <div class="filter-row history-filters">
-              <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="historySearch" placeholder="Search token or student..." oninput="renderHistory()"></div>
-              <select id="historyFilter" onchange="renderHistory()"><option value="all">All statuses</option><option value="waiting">Waiting</option><option value="serving">Serving</option><option value="completed">Completed</option></select>
-            </div>
-            <div class="table-scroll">
-              <table><thead><tr><th>TOKEN</th><th>STUDENT</th><th>DEPARTMENT</th><th>TIME</th><th>STATUS</th></tr></thead><tbody id="historyTable"></tbody></table>
-            </div>
-            <div id="historyEmpty" class="empty-state hidden"><i class="fa-regular fa-folder-open"></i><p>No matching activity found.</p></div>
-          </div>
-        </section>
-
-        <footer class="footer">
-          <span>© 2026 QueueFlow. Smart campus, smoother queues.</span>
-          <span><i class="fa-solid fa-shield-halved"></i> Front-end demonstration</span>
-        </footer>
       </div>
-    </main>
-  </div>
+    </section>
 
-  <div class="toast-container" id="toastContainer"></div>
-  <script src="script.js"></script>
+    <!-- HOW IT WORKS -->
+
+    <section class="section" id="how-it-works">
+      <div class="section-container">
+
+        <div class="section-heading reveal">
+          <div class="eyebrow">SIMPLE PROCESS</div>
+          <h2>Three steps to a <span class="gradient-text">better queue.</span></h2>
+          <p>Getting your campus service should be simple and convenient.</p>
+        </div>
+
+        <div class="steps-grid">
+
+          <article class="step-card reveal">
+            <div class="step-number">01</div>
+            <h3>Choose a service</h3>
+            <p>Log in and select the campus department you want to visit.</p>
+          </article>
+
+          <article class="step-card reveal">
+            <div class="step-number">02</div>
+            <h3>Generate your token</h3>
+            <p>Receive a unique digital token and view your queue position.</p>
+          </article>
+
+          <article class="step-card reveal">
+            <div class="step-number">03</div>
+            <h3>Track and get served</h3>
+            <p>Monitor queue updates and visit the service counter when called.</p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+
+    <section class="section features" id="features">
+      <div class="section-container feature-layout">
+
+        <div class="feature-content reveal">
+          <div class="eyebrow">SMARTER TECHNOLOGY</div>
+
+          <h2>
+            Waiting is old.<br>
+            <span class="gradient-text">QueueFlow is smarter.</span>
+          </h2>
+
+          <p>
+            A centralized queue management experience designed
+            to make campus services more organized, accessible
+            and efficient.
+          </p>
+
+          <div class="feature-list">
+            <div class="feature-item"><span class="check">✓</span> Digital tokens</div>
+            <div class="feature-item"><span class="check">✓</span> Live queue tracking</div>
+            <div class="feature-item"><span class="check">✓</span> QR token passes</div>
+            <div class="feature-item"><span class="check">✓</span> Smart wait estimates</div>
+            <div class="feature-item"><span class="check">✓</span> Queue notifications</div>
+            <div class="feature-item"><span class="check">✓</span> Queue history</div>
+          </div>
+        </div>
+
+        <div class="feature-visual reveal">
+
+          <div class="preview-top">
+            <div class="preview-title">Queue Overview</div>
+            <div class="online-badge">SAMPLE DATA</div>
+          </div>
+
+          <div class="queue-row">
+            <div class="queue-left">
+              <div class="queue-avatar">☕</div>
+              <div>
+                <strong>Canteen</strong>
+                <small>Food counter</small>
+              </div>
+            </div>
+            <span class="queue-status">Available</span>
+          </div>
+
+          <div class="queue-row">
+            <div class="queue-left">
+              <div class="queue-avatar">📚</div>
+              <div>
+                <strong>Library</strong>
+                <small>Library services</small>
+              </div>
+            </div>
+            <span class="queue-status">Available</span>
+          </div>
+
+          <div class="queue-row">
+            <div class="queue-left">
+              <div class="queue-avatar">💳</div>
+              <div>
+                <strong>Accounts</strong>
+                <small>Fee counter</small>
+              </div>
+            </div>
+            <span class="queue-status">Available</span>
+          </div>
+
+          <div class="queue-row">
+            <div class="queue-left">
+              <div class="queue-avatar">🎓</div>
+              <div>
+                <strong>Student Section</strong>
+                <small>Academic services</small>
+              </div>
+            </div>
+            <span class="queue-status">Available</span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+
+    <section class="cta">
+      <div class="cta-card reveal">
+        <h2>Your time deserves better.</h2>
+        <p>
+          Experience a smarter way to access campus services.<br>
+          Join QueueFlow and make every minute count.
+        </p>
+        <a href="register.html" class="btn">
+          Create Your Account →
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+
+  <footer>
+    <div class="footer-inner">
+
+      <div class="footer-brand">
+        <a href="#" class="brand">
+          <span class="brand-icon">⌘</span>
+          Queue<span>Flow</span>
+        </a>
+        <p>Smart Campus Queue Management System.</p>
+      </div>
+
+      <div class="footer-links">
+        <a href="#home">Home</a>
+        <a href="#services">Services</a>
+        <a href="#features">Features</a>
+        <a href="login.html">Login</a>
+      </div>
+
+    </div>
+
+    <div class="copyright">
+      © 2026 QueueFlow. All rights reserved. Built for a smarter campus.
+    </div>
+  </footer>
+
+  <script>
+    // Mobile navigation
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    menuToggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
+      menuToggle.textContent = isOpen ? "✕" : "☰";
+    });
+
+    // Close mobile menu after clicking a link
+    document.querySelectorAll(".nav-links a").forEach(link => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.textContent = "☰";
+      });
+    });
+
+    // Scroll reveal animation
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.12
+    });
+
+    document.querySelectorAll(".reveal").forEach(element => {
+      revealObserver.observe(element);
+    });
+  </script>
+
 </body>
 </html>
