@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f1ff">
+  <title>Create Account | QueueFlow</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'DM Sans',sans-serif;min-height:100vh;background:linear-gradient(135deg,#f8f5ff,#eee8ff,#faf8ff);display:flex;align-items:center;justify-content:center;padding:25px;color:#302747}
+    a{text-decoration:none;color:inherit}
+    .glow{position:fixed;width:350px;height:350px;background:#cdbaff;filter:blur(100px);opacity:.4;border-radius:50%;z-index:-1;top:5%;left:5%}
+    .glow2{position:fixed;width:350px;height:350px;background:#e2cfff;filter:blur(100px);opacity:.5;border-radius:50%;z-index:-1;bottom:0;right:0}
+    .wrapper{width:100%;max-width:460px}
+    .brand{display:flex;justify-content:center;align-items:center;gap:10px;font-family:'Outfit',sans-serif;font-size:27px;font-weight:800;margin-bottom:25px}
+    .brand-icon{width:43px;height:43px;border-radius:14px;background:linear-gradient(135deg,#a88af7,#7048d0);color:white;display:grid;place-items:center;font-size:22px}
+    .brand span:last-child{color:#7048d0}
+    .card{background:rgba(255,255,255,.84);backdrop-filter:blur(25px);border:1px solid white;border-radius:27px;padding:36px;box-shadow:0 25px 70px rgba(91,64,150,.12)}
+    .welcome{text-align:center;margin-bottom:27px}
+    .tag{display:inline-block;background:#f0eaff;color:#7956c9;padding:8px 13px;border-radius:30px;font-size:11px;font-weight:800;letter-spacing:.5px;margin-bottom:16px}
+    h1{font-family:'Outfit',sans-serif;font-size:32px;letter-spacing:-1px;margin-bottom:9px}
+    .welcome p{color:#898198;font-size:13px;line-height:1.7}
+    .field{margin-bottom:17px}
+    label{display:block;font-size:13px;font-weight:700;margin-bottom:9px}
+    input{width:100%;padding:14px 15px;border:1px solid #e9e3f3;border-radius:13px;background:#fbfaff;font:14px 'DM Sans',sans-serif;outline:none;transition:.2s;color:#302747}
+    input:focus{border-color:#9676e2;box-shadow:0 0 0 4px rgba(150,118,226,.12)}
+    .password-wrap{position:relative}
+    .password-wrap input{padding-right:65px}
+    .toggle{position:absolute;right:13px;top:50%;transform:translateY(-50%);border:0;background:none;color:#7956c9;font-size:12px;font-weight:700;cursor:pointer}
+    .submit{width:100%;border:0;border-radius:13px;padding:16px;background:linear-gradient(110deg,#a083ef,#7048cf);color:white;font-weight:800;font-size:14px;cursor:pointer;box-shadow:0 9px 20px rgba(125,85,215,.22);transition:.2s}
+    .submit:hover{transform:translateY(-2px)}
+    .submit:disabled{opacity:.65;cursor:not-allowed;transform:none}
+    .message{display:none;padding:12px 14px;border-radius:11px;font-size:12px;line-height:1.6;margin-bottom:17px}
+    .message.error{display:block;background:#fff0f0;color:#b33d4a;border:1px solid #ffdada}
+    .message.success{display:block;background:#eafaf2;color:#23865d;border:1px solid #c9f0dc}
+    .bottom{text-align:center;color:#898198;font-size:13px;margin-top:22px}
+    .bottom a{color:#7956c9;font-weight:800}
+    .back{text-align:center;margin-top:23px;font-size:12px;color:#827990}
+    .secure{text-align:center;font-size:11px;color:#a29aaf;margin-top:22px}
+    @media(max-width:480px){.card{padding:27px 22px}h1{font-size:29px}}
+  </style>
+</head>
+<body>
+  <div class="glow"></div>
+  <div class="glow2"></div>
+
+  <main class="wrapper">
+    <a href="index.html" class="brand">
+      <span class="brand-icon">⌘</span>
+      Queue<span>Flow</span>
+    </a>
+
+    <section class="card">
+      <div class="welcome">
+        <span class="tag">JOIN QUEUEFLOW</span>
+        <h1>Create your account</h1>
+        <p>Get started with a smarter campus queue experience.</p>
+      </div>
+
+      <div id="message" class="message" role="alert"></div>
+
+      <form id="registerForm">
+        <div class="field">
+          <label for="name">Full name</label>
+          <input type="text" id="name" placeholder="Enter your full name" autocomplete="name" maxlength="70" required>
+        </div>
+
+        <div class="field">
+          <label for="email">Email address</label>
+          <input type="email" id="email" placeholder="you@example.com" autocomplete="email" required>
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="password-wrap">
+            <input type="password" id="password" placeholder="At least 6 characters" autocomplete="new-password" minlength="6" required>
+            <button type="button" class="toggle" id="togglePassword">Show</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="confirmPassword">Confirm password</label>
+          <input type="password" id="confirmPassword" placeholder="Enter password again" autocomplete="new-password" required>
+        </div>
+
+        <button type="submit" class="submit" id="registerButton">Create Account →</button>
+      </form>
+
+      <div class="bottom">
+        Already have an account? <a href="login.html">Sign in</a>
+      </div>
+    </section>
+
+    <div class="back"><a href="index.html">← Back to homepage</a></div>
+    <div class="secure">🔒 Secure authentication powered by Firebase</div>
+  </main>
+
+  <script type="module">
+    import { registerUser, watchAuthState } from "./js/auth.js";
+
+    const form = document.getElementById("registerForm");
+    const message = document.getElementById("message");
+    const button = document.getElementById("registerButton");
+    const password = document.getElementById("password");
+
+    function showMessage(text, type = "error") {
+      message.textContent = text;
+      message.className = "message " + type;
+    }
+
+    document.getElementById("togglePassword").addEventListener("click", function () {
+      const visible = password.type === "password";
+      password.type = visible ? "text" : "password";
+      this.textContent = visible ? "Hide" : "Show";
+    });
+
+    watchAuthState(user => {
+      if (user) window.location.replace("dashboard.html");
+    });
+
+    form.addEventListener("submit", async event => {
+      event.preventDefault();
+      message.className = "message";
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const confirmPassword = document.getElementById("confirmPassword").value;
+
+      if (name.length < 2) {
+        showMessage("Please enter your full name.");
+        return;
+      }
+
+      if (password.value !== confirmPassword) {
+        showMessage("Your passwords do not match.");
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = "Creating account...";
+
+      try {
+        await registerUser(name, email, password.value);
+        showMessage("Account created successfully! Redirecting...", "success");
+        window.location.replace("dashboard.html");
+      } catch (error) {
+        showMessage(error.message);
+        button.disabled = false;
+        button.textContent = "Create Account →";
+      }
+    });
+  </script>
+</body>
+</html>
