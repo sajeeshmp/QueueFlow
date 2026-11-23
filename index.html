@@ -4,382 +4,303 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#050914">
 
-    <title>QueueFlow | Smart Campus Management</title>
+    <title>QueueFlow | Smart Campus Queue</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/app.js" defer></script>
 </head>
 
 <body>
 
-<div class="ambient ambient-one"></div>
-<div class="ambient ambient-two"></div>
-<div class="ambient ambient-three"></div>
-
 <div class="app-shell">
 
     <!-- SIDEBAR -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
 
         <div class="brand">
-            <div class="brand-logo">Q</div>
+            <div class="brand-icon">Q</div>
             <div>
                 <h2>QueueFlow</h2>
                 <span>SMART CAMPUS</span>
             </div>
         </div>
 
-        <div class="sidebar-label">WORKSPACE</div>
+        <div class="nav-label">WORKSPACE</div>
 
         <nav class="navigation">
-            <a href="#overview" class="nav-item active">
-                <span class="nav-icon">▦</span>
-                Overview
-            </a>
+            <button class="nav-link active" data-page="dashboard">
+                <span>▦</span> Dashboard
+            </button>
 
-            <a href="#services" class="nav-item">
-                <span class="nav-icon">▣</span>
-                Campus Services
-            </a>
+            <button class="nav-link" data-page="services">
+                <span>◫</span> Campus Services
+            </button>
 
-            <a href="#join" class="nav-item">
-                <span class="nav-icon">＋</span>
-                Get a Token
-            </a>
+            <button class="nav-link" data-page="student">
+                <span>＋</span> Join a Queue
+            </button>
 
-            <a href="#operator" class="nav-item">
-                <span class="nav-icon">◷</span>
-                Operator Panel
-            </a>
+            <button class="nav-link" data-page="operator">
+                <span>▣</span> Operator Console
+            </button>
 
-            <a href="#history" class="nav-item">
-                <span class="nav-icon">▤</span>
-                Queue History
-            </a>
+            <button class="nav-link" data-page="history">
+                <span>◷</span> Queue History
+            </button>
         </nav>
 
-        <div class="sidebar-label quick-label">SYSTEM</div>
-
-        <div class="sidebar-system">
-            <div class="system-indicator"></div>
-            <div>
-                <strong>All Systems Normal</strong>
-                <small>Front-end demo mode</small>
-            </div>
-        </div>
-
         <div class="sidebar-bottom">
-            <div class="profile-avatar">QF</div>
-            <div class="profile-details">
-                <strong>Campus Admin</strong>
-                <small>Administrator</small>
+            <div class="system-card">
+                <span class="status-dot"></span>
+                <div>
+                    <strong>System Online</strong>
+                    <small>Local demo environment</small>
+                </div>
             </div>
-            <span class="profile-menu">···</span>
-        </div>
 
+            <div class="profile">
+                <div class="avatar">A</div>
+                <div>
+                    <strong>Campus Admin</strong>
+                    <small>Administrator</small>
+                </div>
+            </div>
+        </div>
     </aside>
 
 
     <!-- MAIN AREA -->
     <main class="main-content">
 
-        <!-- TOP BAR -->
         <header class="topbar">
-
-            <div class="page-heading">
-                <div class="breadcrumb">Workspace <span>/</span> Overview</div>
-                <h1>Campus Dashboard</h1>
+            <div class="topbar-left">
+                <button class="menu-btn" id="menuBtn">☰</button>
+                <div>
+                    <p class="breadcrumb">WORKSPACE / <span id="breadcrumb">DASHBOARD</span></p>
+                    <h1 id="pageTitle">Campus Overview</h1>
+                </div>
             </div>
 
-            <div class="topbar-actions">
-
-                <div class="search-box">
-                    <span>⌕</span>
-                    <input type="text" id="globalSearch" placeholder="Search services...">
-                    <kbd>⌘ K</kbd>
-                </div>
-
-                <button class="icon-button" id="notificationButton" title="Notifications">
-                    ♧
-                    <span class="notification-dot"></span>
-                </button>
-
-                <div class="top-profile">
-                    <div class="profile-avatar">QF</div>
-                    <div>
-                        <strong>Administrator</strong>
-                        <small>Campus office</small>
-                    </div>
-                </div>
-
+            <div class="topbar-right">
+                <div class="date-display" id="todayDate"></div>
+                <div class="admin-avatar">A</div>
             </div>
-
         </header>
 
 
-        <!-- OVERVIEW -->
-        <section id="overview" class="page-section">
+        <!-- DASHBOARD PAGE -->
+        <section class="page active" id="dashboard">
 
-            <!-- HERO -->
-            <div class="hero-panel">
-
-                <div class="hero-content">
-                    <div class="hero-tag">
-                        <span class="pulse-dot"></span>
-                        SMART CAMPUS MANAGEMENT
-                    </div>
-
-                    <h2>Manage queues.<br><span>Not waiting time.</span></h2>
-
-                    <p>
-                        A smarter campus experience starts here.
-                        Manage departments, issue digital tokens and
-                        keep every queue moving efficiently.
-                    </p>
-
-                    <div class="hero-buttons">
-                        <a href="#join" class="button-primary">
-                            Get a Token <span>→</span>
-                        </a>
-
-                        <a href="#services" class="button-outline">
-                            Explore Services
-                        </a>
-                    </div>
+            <div class="welcome-banner">
+                <div>
+                    <span class="eyebrow">CAMPUS MANAGEMENT SYSTEM</span>
+                    <h2>Welcome to QueueFlow<span>.</span></h2>
+                    <p>Manage campus queues. Reduce waiting. Improve experiences.</p>
                 </div>
 
-                <div class="hero-art">
-                    <div class="hero-ring ring-one"></div>
-                    <div class="hero-ring ring-two"></div>
-                    <div class="hero-ring ring-three"></div>
-
-                    <div class="hero-core">Q</div>
-
-                    <div class="floating-node node-one">✦</div>
-                    <div class="floating-node node-two">◈</div>
-                    <div class="floating-node node-three">+</div>
-                </div>
-
-                <div class="hero-glow"></div>
-
+                <button class="primary-btn" data-goto="student">
+                    + Generate Token
+                </button>
             </div>
 
+            <div class="stats-grid">
 
-            <!-- METRICS -->
-            <div class="metrics-grid">
-
-                <div class="metric-card metric-cyan">
-                    <div class="metric-header">
+                <div class="stat-card">
+                    <div class="stat-top">
                         <span>Total Departments</span>
-                        <div class="metric-icon">▦</div>
+                        <span class="stat-icon">▦</span>
                     </div>
-                    <h2 id="totalServices">10</h2>
-                    <small>Campus service points</small>
-                    <div class="metric-decoration"></div>
+                    <h2 id="totalDepartments">10</h2>
+                    <small>Campus service units</small>
                 </div>
 
-                <div class="metric-card metric-purple">
-                    <div class="metric-header">
+                <div class="stat-card">
+                    <div class="stat-top">
                         <span>People Waiting</span>
-                        <div class="metric-icon">♙</div>
+                        <span class="stat-icon amber">◷</span>
                     </div>
                     <h2 id="totalWaiting">0</h2>
                     <small>Across all departments</small>
-                    <div class="metric-decoration"></div>
                 </div>
 
-                <div class="metric-card metric-green">
-                    <div class="metric-header">
+                <div class="stat-card">
+                    <div class="stat-top">
                         <span>Currently Serving</span>
-                        <div class="metric-icon">◷</div>
+                        <span class="stat-icon blue">◉</span>
                     </div>
                     <h2 id="totalServing">0</h2>
                     <small>Active service counters</small>
-                    <div class="metric-decoration"></div>
                 </div>
 
-                <div class="metric-card metric-pink">
-                    <div class="metric-header">
+                <div class="stat-card">
+                    <div class="stat-top">
                         <span>Completed Today</span>
-                        <div class="metric-icon">✓</div>
+                        <span class="stat-icon purple">✓</span>
                     </div>
                     <h2 id="totalCompleted">0</h2>
-                    <small>Successfully completed tokens</small>
-                    <div class="metric-decoration"></div>
+                    <small>Successfully completed</small>
                 </div>
 
             </div>
 
 
-            <!-- ANALYTICS -->
-            <div class="analytics-grid">
+            <div class="dashboard-grid">
 
-                <div class="glass-panel analytics-panel">
-
-                    <div class="panel-header">
+                <div class="panel chart-panel">
+                    <div class="panel-heading">
                         <div>
-                            <span class="section-kicker">QUEUE ANALYTICS</span>
-                            <h3>Campus Activity</h3>
+                            <h3>Department Activity</h3>
+                            <p>People currently waiting</p>
                         </div>
-
-                        <span class="live-label">
-                            <span class="pulse-dot"></span>
-                            LIVE DEMO
-                        </span>
+                        <span class="live-label">● LIVE DATA</span>
                     </div>
 
                     <div class="chart-container">
-                        <canvas id="activityChart"></canvas>
+                        <canvas id="departmentChart"></canvas>
                     </div>
-
-                    <div class="chart-footer">
-                        <div>
-                            <span class="legend-dot cyan-dot"></span>
-                            <span>Waiting tokens</span>
-                        </div>
-                        <div>
-                            <span class="legend-dot purple-dot"></span>
-                            <span>Completed tokens</span>
-                        </div>
-                    </div>
-
                 </div>
 
 
-                <div class="glass-panel department-panel">
-
-                    <div class="panel-header">
+                <div class="panel">
+                    <div class="panel-heading">
                         <div>
-                            <span class="section-kicker">DEPARTMENT STATUS</span>
-                            <h3>Queue Distribution</h3>
+                            <h3>Queue Overview</h3>
+                            <p>Current campus distribution</p>
                         </div>
                     </div>
 
-                    <div id="departmentDistribution" class="distribution-list"></div>
+                    <div class="chart-container doughnut-container">
+                        <canvas id="queueChart"></canvas>
+                    </div>
 
+                    <div class="legend-list" id="queueLegend"></div>
                 </div>
 
+            </div>
+
+
+            <div class="panel department-panel">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Department Status</h3>
+                        <p>Quick overview of campus services</p>
+                    </div>
+
+                    <button class="text-btn" data-goto="services">
+                        View all →
+                    </button>
+                </div>
+
+                <div class="department-grid" id="dashboardDepartments"></div>
             </div>
 
         </section>
 
 
-        <!-- SERVICES -->
-        <section id="services" class="page-section section-spacing">
+        <!-- SERVICES PAGE -->
+        <section class="page" id="services">
 
-            <div class="section-title-row">
+            <div class="section-intro">
                 <div>
-                    <span class="section-kicker">CAMPUS DEPARTMENTS</span>
+                    <span class="eyebrow">CAMPUS DIRECTORY</span>
                     <h2>Explore Services</h2>
-                    <p>Choose a department and manage your visit.</p>
-                </div>
-
-                <div class="service-search">
-                    <span>⌕</span>
-                    <input type="text" id="serviceSearch" placeholder="Filter departments...">
+                    <p>Select a department to view its queue or generate a token.</p>
                 </div>
             </div>
 
-            <div id="serviceGrid" class="service-grid"></div>
+            <div class="toolbar">
+                <input type="search" id="serviceSearch"
+                    placeholder="Search departments...">
+
+                <select id="serviceFilter">
+                    <option value="all">All departments</option>
+                    <option value="available">Has waiting students</option>
+                    <option value="idle">No waiting students</option>
+                </select>
+            </div>
+
+            <div class="service-grid" id="serviceGrid"></div>
 
         </section>
 
 
-        <!-- JOIN QUEUE -->
-        <section id="join" class="page-section section-spacing">
+        <!-- STUDENT PAGE -->
+        <section class="page" id="student">
 
-            <div class="section-title-row">
+            <div class="section-intro">
                 <div>
-                    <span class="section-kicker">STUDENT PORTAL</span>
-                    <h2>Get Your Digital Token</h2>
-                    <p>Join a department queue without standing in line.</p>
+                    <span class="eyebrow">STUDENT PORTAL</span>
+                    <h2>Join a Queue</h2>
+                    <p>Generate your digital token and track your position.</p>
                 </div>
             </div>
 
-            <div class="join-layout">
+            <div class="student-layout">
 
-                <div class="glass-panel join-form">
+                <div class="panel form-panel">
+                    <h3>Student Information</h3>
+                    <p class="muted">Enter your details to generate a queue token.</p>
 
-                    <div class="form-heading">
-                        <div class="form-heading-icon">＋</div>
-                        <div>
-                            <h3>Join a Queue</h3>
-                            <p>Enter your details below.</p>
-                        </div>
-                    </div>
-
-                    <form id="queueForm">
+                    <form id="tokenForm">
 
                         <label for="studentName">Full Name</label>
-                        <input
-                            type="text"
-                            id="studentName"
-                            placeholder="Enter your full name"
-                            maxlength="45"
-                            required
-                        >
+                        <input id="studentName" type="text"
+                            placeholder="Enter your name" required>
 
-                        <label for="studentId">Student ID <span class="optional">(optional)</span></label>
-                        <input
-                            type="text"
-                            id="studentId"
-                            placeholder="Enter your student ID"
-                            maxlength="25"
-                        >
+                        <label for="studentId">Student ID (Optional)</label>
+                        <input id="studentId" type="text"
+                            placeholder="Enter your college ID">
 
-                        <label for="serviceSelect">Select Department</label>
-                        <select id="serviceSelect" required>
+                        <label for="studentService">Select Department</label>
+                        <select id="studentService" required>
                             <option value="">Choose a department</option>
                         </select>
 
-                        <button type="submit" class="button-primary form-submit">
-                            Generate Digital Token <span>→</span>
+                        <button class="primary-btn full-btn" type="submit">
+                            Generate My Token →
                         </button>
 
-                        <p id="formMessage" class="form-message"></p>
-
                     </form>
-
                 </div>
 
 
-                <div class="glass-panel digital-pass">
-
-                    <div class="pass-top">
-                        <span class="section-kicker">DIGITAL QUEUE PASS</span>
-                        <span class="pass-status">● READY</span>
+                <div class="panel token-panel">
+                    <div class="token-placeholder" id="tokenPlaceholder">
+                        <div class="placeholder-icon">◈</div>
+                        <h3>Your digital pass</h3>
+                        <p>Your token will appear here after registration.</p>
                     </div>
 
-                    <div class="pass-emblem">Q</div>
+                    <div class="generated-token hidden" id="generatedToken">
+                        <span class="eyebrow">QUEUEFLOW DIGITAL PASS</span>
+                        <div class="token-check">✓</div>
+                        <p class="muted">YOUR TOKEN NUMBER</p>
+                        <h2 id="generatedTokenNumber">LIB-001</h2>
+                        <h3 id="generatedStudentName">Student Name</h3>
+                        <p id="generatedDepartment" class="muted"></p>
 
-                    <p class="pass-caption">YOUR TOKEN NUMBER</p>
-                    <h2 id="generatedToken">---</h2>
-
-                    <div class="pass-divider"></div>
-
-                    <div class="pass-details">
-                        <div>
-                            <small>STUDENT</small>
-                            <strong id="passName">Not generated</strong>
+                        <div class="token-details">
+                            <div>
+                                <small>QUEUE POSITION</small>
+                                <strong id="generatedPosition">01</strong>
+                            </div>
+                            <div>
+                                <small>STATUS</small>
+                                <strong class="waiting-text">Waiting</strong>
+                            </div>
                         </div>
-                        <div>
-                            <small>DEPARTMENT</small>
-                            <strong id="passService">Not selected</strong>
-                        </div>
-                    </div>
 
-                    <div class="pass-footer">
-                        <span>QUEUEFLOW</span>
-                        <span>SMART CAMPUS EXPERIENCE</span>
+                        <p class="token-note">
+                            Please wait until your token is called.
+                        </p>
                     </div>
-
                 </div>
 
             </div>
@@ -387,167 +308,138 @@
         </section>
 
 
-        <!-- OPERATOR -->
-        <section id="operator" class="page-section section-spacing">
+        <!-- OPERATOR PAGE -->
+        <section class="page" id="operator">
 
-            <div class="section-title-row">
+            <div class="section-intro">
                 <div>
-                    <span class="section-kicker">CONTROL CENTER</span>
+                    <span class="eyebrow">DEPARTMENT MANAGEMENT</span>
                     <h2>Operator Console</h2>
-                    <p>Manage individual department queues.</p>
+                    <p>Manage waiting students and control department queues.</p>
                 </div>
             </div>
 
-            <div class="glass-panel operator-panel">
+            <div class="panel operator-select">
+                <label for="operatorService">Select Department</label>
+                <select id="operatorService"></select>
+            </div>
 
-                <div class="operator-heading">
+            <div class="operator-grid">
+
+                <div class="panel now-serving">
+                    <span class="eyebrow">CURRENTLY SERVING</span>
+                    <h2 id="operatorCurrent">---</h2>
+                    <h3 id="operatorCurrentName">No active token</h3>
+                    <p id="operatorCurrentService" class="muted">Select a department</p>
+
+                    <div class="operator-actions">
+                        <button class="primary-btn" id="callNextBtn">Call Next →</button>
+                        <button class="secondary-btn" id="completeBtn">✓ Complete</button>
+                    </div>
+
+                    <p class="operator-message" id="operatorMessage"></p>
+                </div>
+
+                <div class="panel operator-stats">
                     <div>
-                        <span class="section-kicker">SELECT SERVICE COUNTER</span>
-                        <h3>Queue Management</h3>
+                        <span>Waiting</span>
+                        <strong id="operatorWaiting">0</strong>
                     </div>
-
-                    <select id="operatorService" class="operator-select"></select>
-                </div>
-
-                <div class="operator-display">
-
-                    <div class="serving-box">
-                        <span class="section-kicker">NOW SERVING</span>
-                        <h2 id="operatorToken">---</h2>
-                        <p id="operatorStudent">No active token</p>
+                    <div>
+                        <span>Completed</span>
+                        <strong id="operatorCompleted">0</strong>
                     </div>
-
-                    <div class="queue-info-box">
-                        <div>
-                            <span>Waiting</span>
-                            <strong id="serviceWaiting">0</strong>
-                        </div>
-
-                        <div>
-                            <span>Completed</span>
-                            <strong id="serviceCompleted">0</strong>
-                        </div>
+                    <div>
+                        <span>Next Token</span>
+                        <strong id="operatorNext">---</strong>
                     </div>
-
                 </div>
-
-                <div class="operator-actions">
-                    <button id="callNextButton" class="button-primary">
-                        Call Next Student →
-                    </button>
-
-                    <button id="completeButton" class="button-outline">
-                        ✓ Complete Current
-                    </button>
-                </div>
-
-                <p id="operatorMessage" class="operator-message">
-                    Select a department to manage its queue.
-                </p>
 
             </div>
 
-
-            <div class="glass-panel waiting-panel">
-
-                <div class="panel-header">
+            <div class="panel">
+                <div class="panel-heading">
                     <div>
-                        <span class="section-kicker">UPCOMING STUDENTS</span>
                         <h3>Waiting List</h3>
+                        <p>Students waiting for assistance</p>
                     </div>
-                    <span class="queue-count" id="waitingCount">0 waiting</span>
                 </div>
 
                 <div class="table-wrapper">
                     <table>
                         <thead>
                             <tr>
-                                <th>TOKEN</th>
-                                <th>STUDENT</th>
-                                <th>STUDENT ID</th>
-                                <th>DEPARTMENT</th>
-                                <th>STATUS</th>
+                                <th>Token</th>
+                                <th>Student</th>
+                                <th>Student ID</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
-
-                        <tbody id="waitingTable">
-                            <tr>
-                                <td colspan="5" class="table-empty">
-                                    No students waiting.
-                                </td>
-                            </tr>
-                        </tbody>
+                        <tbody id="operatorWaitingList"></tbody>
                     </table>
                 </div>
-
             </div>
 
         </section>
 
 
-        <!-- HISTORY -->
-        <section id="history" class="page-section section-spacing">
+        <!-- HISTORY PAGE -->
+        <section class="page" id="history">
 
-            <div class="section-title-row">
+            <div class="section-intro">
                 <div>
-                    <span class="section-kicker">QUEUE RECORDS</span>
-                    <h2>Recent Activity</h2>
-                    <p>Track completed and issued tokens.</p>
+                    <span class="eyebrow">ACTIVITY RECORDS</span>
+                    <h2>Queue History</h2>
+                    <p>Review tokens generated and services completed.</p>
                 </div>
 
-                <button id="clearHistoryButton" class="button-outline">
+                <button class="secondary-btn" id="clearHistoryBtn">
                     Clear History
                 </button>
             </div>
 
-            <div class="glass-panel history-panel">
+            <div class="panel">
+                <div class="toolbar">
+                    <input type="search" id="historySearch"
+                        placeholder="Search token or student...">
+
+                    <select id="historyFilter">
+                        <option value="all">All statuses</option>
+                        <option value="Waiting">Waiting</option>
+                        <option value="Serving">Serving</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
 
                 <div class="table-wrapper">
                     <table>
                         <thead>
                             <tr>
-                                <th>TOKEN</th>
-                                <th>STUDENT</th>
-                                <th>DEPARTMENT</th>
-                                <th>TIME</th>
-                                <th>STATUS</th>
+                                <th>Token</th>
+                                <th>Student</th>
+                                <th>Department</th>
+                                <th>Time</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
-
-                        <tbody id="historyTable">
-                            <tr>
-                                <td colspan="5" class="table-empty">
-                                    No activity recorded yet.
-                                </td>
-                            </tr>
-                        </tbody>
+                        <tbody id="historyTable"></tbody>
                     </table>
                 </div>
-
             </div>
 
         </section>
 
 
-        <!-- FOOTER -->
         <footer class="footer">
-            <div class="footer-brand">
-                <span class="footer-logo">Q</span>
-                <strong>QueueFlow</strong>
-            </div>
-
-            <p>SMART CAMPUS QUEUE MANAGEMENT SYSTEM</p>
-
-            <span>© 2026 QueueFlow. Front-end demonstration.</span>
+            <span>© 2026 QueueFlow</span>
+            <span>Smart Campus Queue Management System</span>
         </footer>
 
     </main>
 
 </div>
 
-<div id="toast" class="toast"></div>
-
-<script src="script.js"></script>
+<div class="toast" id="toast"></div>
 
 </body>
 </html>
