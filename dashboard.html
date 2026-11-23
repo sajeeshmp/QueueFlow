@@ -1,138 +1,291 @@
 
-import { auth, db } from "./firebase.js";
-import { logoutUser, watchAuthState } from "./auth.js";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f6f3ff">
+  <title>Dashboard | QueueFlow</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-import {
-  collection,
-  query,
-  where,
-  onSnapshot
-} from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'DM Sans',sans-serif;background:#f7f5fc;color:#302747;min-height:100vh}
+    a{text-decoration:none;color:inherit}
+    button{font-family:inherit;cursor:pointer}
+    .layout{display:flex;min-height:100vh}
 
-const userName = document.getElementById("userName");
-const userAvatar = document.getElementById("userAvatar");
-const logoutButton = document.getElementById("logoutButton");
+    /* Sidebar */
+    .sidebar{width:245px;background:white;border-right:1px solid #eeeaf5;padding:27px 19px;position:fixed;top:0;bottom:0;left:0;display:flex;flex-direction:column;z-index:5}
+    .brand{display:flex;align-items:center;gap:10px;font-family:'Outfit',sans-serif;font-size:25px;font-weight:800;margin:0 0 42px 8px}
+    .brand-icon{width:39px;height:39px;background:linear-gradient(135deg,#a88af7,#7048d0);border-radius:13px;display:grid;place-items:center;color:white}
+    .brand span:last-child{color:#7048d0}
+    .nav-label{font-size:10px;font-weight:800;color:#aaa1b9;letter-spacing:1.3px;margin:0 0 13px 12px}
+    .nav-link{display:flex;align-items:center;gap:13px;padding:13px 14px;border-radius:12px;color:#81778f;font-size:13px;font-weight:700;margin-bottom:7px;transition:.2s}
+    .nav-link:hover,.nav-link.active{background:#f1ecff;color:#7956ce}
+    .nav-icon{font-size:17px;width:20px;text-align:center}
+    .sidebar-bottom{margin-top:auto}
+    .help-box{background:#f6f2ff;border-radius:15px;padding:16px;margin-bottom:18px}
+    .help-box strong{font-size:12px}
+    .help-box p{font-size:11px;color:#8e849b;line-height:1.6;margin-top:6px}
 
-const services = [
-  "canteen",
-  "office",
-  "library",
-  "accounts",
-  "laboratory",
-  "student-section",
-  "placement",
-  "hostel"
-];
+    /* Main */
+    .main{margin-left:245px;width:calc(100% - 245px);padding:30px 38px 45px}
+    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:34px}
+    .breadcrumb{font-size:12px;color:#a39aac}
+    .top-actions{display:flex;align-items:center;gap:13px}
+    .date-pill{background:white;border:1px solid #eeeaf5;padding:10px 15px;border-radius:12px;font-size:11px;color:#827990}
+    .avatar{width:41px;height:41px;border-radius:14px;background:#e9dfff;color:#7956c9;display:grid;place-items:center;font-weight:800}
+    .welcome{display:flex;justify-content:space-between;align-items:center;margin-bottom:27px}
+    .welcome h1{font-family:'Outfit',sans-serif;font-size:31px;letter-spacing:-.8px;margin-bottom:7px}
+    .welcome p{font-size:13px;color:#91889e}
+    .welcome-tag{background:#eee8ff;color:#7956c9;padding:10px 14px;border-radius:12px;font-size:11px;font-weight:800}
 
-const serviceNames = {
-  canteen: "Canteen",
-  office: "Administration",
-  library: "Library",
-  accounts: "Accounts / Fees",
-  laboratory: "Laboratory",
-  "student-section": "Student Section",
-  placement: "Placement Cell",
-  hostel: "Hostel Office"
-};
+    /* Stats */
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:17px;margin-bottom:30px}
+    .stat-card{background:white;border:1px solid #eeeaf5;border-radius:18px;padding:21px;transition:.25s}
+    .stat-card:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(80,60,130,.07)}
+    .stat-top{display:flex;justify-content:space-between;align-items:center}
+    .stat-icon{width:39px;height:39px;border-radius:12px;background:#f0eaff;display:grid;place-items:center;font-size:18px}
+    .stat-label{font-size:11px;color:#92899e;font-weight:600}
+    .stat-value{font-family:'Outfit',sans-serif;font-size:29px;font-weight:800;margin-top:14px}
+    .stat-note{font-size:10px;color:#aaa1b5;margin-top:4px}
 
-function updateNumber(id, value) {
-  const element = document.getElementById(id);
-  if (element) element.textContent = value;
-}
+    /* Sections */
+    .section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}
+    .section-head h2{font-family:'Outfit',sans-serif;font-size:20px}
+    .section-head p{font-size:11px;color:#a29aaf;margin-top:5px}
+    .services{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:30px}
+    .service-card{background:white;border:1px solid #eeeaf5;border-radius:17px;padding:20px 17px;transition:.25s}
+    .service-card:hover{border-color:#c7b4f4;transform:translateY(-3px);box-shadow:0 12px 25px rgba(80,60,130,.06)}
+    .service-icon{width:43px;height:43px;border-radius:13px;background:#f1ecff;display:grid;place-items:center;font-size:21px;margin-bottom:16px}
+    .service-card h3{font-size:13px;margin-bottom:7px}
+    .service-card p{font-size:10px;color:#a39aac;line-height:1.5}
+    .service-action{display:inline-block;color:#7956c9;font-size:11px;font-weight:800;margin-top:17px}
 
-function loadDashboard(user) {
-  const name = user.displayName || user.email.split("@")[0];
+    /* Bottom panels */
+    .bottom-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:17px}
+    .panel{background:white;border:1px solid #eeeaf5;border-radius:18px;padding:22px}
+    .empty-state{text-align:center;padding:29px 10px}
+    .empty-icon{width:55px;height:55px;background:#f2edff;border-radius:17px;display:grid;place-items:center;margin:0 auto 14px;font-size:24px}
+    .empty-state h3{font-family:'Outfit',sans-serif;font-size:16px;margin-bottom:7px}
+    .empty-state p{font-size:11px;color:#a39aac;line-height:1.7}
+    .quick-list{display:grid;gap:15px;margin-top:19px}
+    .quick-item{display:flex;align-items:center;gap:12px}
+    .quick-icon{width:37px;height:37px;border-radius:11px;background:#f3efff;display:grid;place-items:center;font-size:17px}
+    .quick-item strong{font-size:12px;display:block}
+    .quick-item span{font-size:10px;color:#a39aac;display:block;margin-top:4px}
+    .logout{width:100%;border:0;background:#fff0f0;color:#bd5360;padding:12px;border-radius:11px;font-size:12px;font-weight:800}
+    .logout:hover{background:#ffe4e6}
+    .mobile-menu{display:none}
+    .loading{font-size:12px;color:#8c829b}
 
-  userName.textContent = name;
-  userAvatar.textContent = name.charAt(0).toUpperCase();
+    @media(max-width:1100px){
+      .services{grid-template-columns:repeat(2,1fr)}
+      .stats{grid-template-columns:repeat(3,1fr)}
+    }
+    @media(max-width:750px){
+      .sidebar{width:68px;padding:20px 9px}
+      .brand{margin:0 auto 40px;font-size:0}
+      .brand-icon{width:43px;height:43px}
+      .nav-label,.nav-link span:not(.nav-icon),.help-box{display:none}
+      .nav-link{justify-content:center;padding:14px 8px}
+      .sidebar-bottom .logout{font-size:0;padding:12px 5px}
+      .sidebar-bottom .logout:after{content:"↪";font-size:18px}
+      .main{margin-left:68px;width:calc(100% - 68px);padding:23px 18px}
+      .stats{grid-template-columns:1fr}
+      .bottom-grid{grid-template-columns:1fr}
+      .welcome{align-items:flex-start;gap:10px}
+      .welcome h1{font-size:25px}
+      .welcome-tag{font-size:9px}
+    }
+    @media(max-width:430px){
+      .services{grid-template-columns:1fr 1fr;gap:10px}
+      .service-card{padding:15px 12px}
+      .date-pill{display:none}
+      .main{padding:20px 12px}
+    }
+  </style>
+</head>
 
-  // Listen to all waiting tokens.
-  const waitingQuery = query(
-    collection(db, "tokens"),
-    where("status", "==", "waiting")
-  );
+<body>
+<div class="layout">
 
-  onSnapshot(waitingQuery, snapshot => {
-    updateNumber("activeCount", snapshot.size);
+  <aside class="sidebar">
+    <a href="dashboard.html" class="brand">
+      <span class="brand-icon">⌘</span>
+      Queue<span>Flow</span>
+    </a>
 
-    const serviceCounts = {};
+    <div class="nav-label">WORKSPACE</div>
+    <a href="dashboard.html" class="nav-link active"><span class="nav-icon">▦</span><span>Dashboard</span></a>
+    <a href="queue.html" class="nav-link"><span class="nav-icon">＋</span><span>Join a Queue</span></a>
+    <a href="my-tokens.html" class="nav-link"><span class="nav-icon">▤</span><span>My Tokens</span></a>
+    <a href="profile.html" class="nav-link"><span class="nav-icon">◉</span><span>My Profile</span></a>
 
-    services.forEach(service => {
-      serviceCounts[service] = 0;
-    });
+    <div class="sidebar-bottom">
+      <div class="help-box">
+        <strong>Need assistance?</strong>
+        <p>QueueFlow helps you save time by managing your campus queues digitally.</p>
+      </div>
+      <button class="logout" id="logoutButton">↪ &nbsp; Log Out</button>
+    </div>
+  </aside>
 
-    snapshot.forEach(doc => {
-      const token = doc.data();
+  <main class="main">
+    <div class="topbar">
+      <div class="breadcrumb">Workspace / Dashboard</div>
+      <div class="top-actions">
+        <div class="date-pill" id="todayDate">Today</div>
+        <div class="avatar" id="userAvatar">S</div>
+      </div>
+    </div>
 
-      if (serviceCounts[token.serviceId] !== undefined) {
-        serviceCounts[token.serviceId]++;
-      }
-    });
+    <section class="welcome">
+      <div>
+        <h1>Welcome back, <span id="userName">Student</span> 👋</h1>
+        <p>Here's what's happening with your campus queues today.</p>
+      </div>
+      <div class="welcome-tag">✦ STUDENT PORTAL</div>
+    </section>
 
-    services.forEach(service => {
-      updateNumber("count-" + service, serviceCounts[service]);
-    });
+    <section class="stats">
+      <div class="stat-card">
+        <div class="stat-top">
+          <span class="stat-label">Active Tokens</span>
+          <div class="stat-icon">🎟️</div>
+        </div>
+        <div class="stat-value">0</div>
+        <div class="stat-note">Your currently active queue tokens</div>
+      </div>
 
-  }, error => {
-    console.error("Waiting queue error:", error);
-  });
+      <div class="stat-card">
+        <div class="stat-top">
+          <span class="stat-label">Queues Available</span>
+          <div class="stat-icon">🏢</div>
+        </div>
+        <div class="stat-value">8</div>
+        <div class="stat-note">Campus services listed on QueueFlow</div>
+      </div>
 
-  // Listen to this student's tokens.
-  const myTokensQuery = query(
-    collection(db, "tokens"),
-    where("userId", "==", user.uid)
-  );
+      <div class="stat-card">
+        <div class="stat-top">
+          <span class="stat-label">Completed Tokens</span>
+          <div class="stat-icon">✓</div>
+        </div>
+        <div class="stat-value">0</div>
+        <div class="stat-note">Your completed queue visits</div>
+      </div>
+    </section>
 
-  onSnapshot(myTokensQuery, snapshot => {
-    let active = 0;
-    let completed = 0;
+    <section>
+      <div class="section-head">
+        <div>
+          <h2>Campus Services</h2>
+          <p>Choose a service to join its queue.</p>
+        </div>
+      </div>
 
-    snapshot.forEach(doc => {
-      const status = doc.data().status;
+      <div class="services">
+        <a href="queue.html?service=canteen" class="service-card">
+          <div class="service-icon">🍽️</div>
+          <h3>Canteen</h3>
+          <p>Food orders and campus refreshments</p>
+          <span class="service-action">Join Queue →</span>
+        </a>
 
-      if (status === "waiting" || status === "serving") {
-        active++;
-      }
+        <a href="queue.html?service=office" class="service-card">
+          <div class="service-icon">🏢</div>
+          <h3>Office / Administration</h3>
+          <p>General campus administration</p>
+          <span class="service-action">Join Queue →</span>
+        </a>
 
-      if (status === "completed") {
-        completed++;
-      }
-    });
+        <a href="queue.html?service=library" class="service-card">
+          <div class="service-icon">📚</div>
+          <h3>Library</h3>
+          <p>Library services and book assistance</p>
+          <span class="service-action">Join Queue →</span>
+        </a>
 
-    updateNumber("myActiveCount", active);
-    updateNumber("completedCount", completed);
+        <a href="queue.html?service=accounts" class="service-card">
+          <div class="service-icon">💳</div>
+          <h3>Accounts / Fees</h3>
+          <p>Fee payments and account queries</p>
+          <span class="service-action">Join Queue →</span>
+        </a>
 
-  }, error => {
-    console.error("My tokens error:", error);
-  });
-}
+        <a href="queue.html?service=laboratory" class="service-card">
+          <div class="service-icon">🧪</div>
+          <h3>Laboratory</h3>
+          <p>Lab access and equipment requests</p>
+          <span class="service-action">Join Queue →</span>
+        </a>
 
-watchAuthState(user => {
-  if (!user) {
-    window.location.replace("login.html");
-    return;
-  }
+        <a href="queue.html?service=student-section" class="service-card">
+          <div class="service-icon">🎓</div>
+          <h3>Student Section</h3>
+          <p>Certificates and student records</p>
+          <span class="service-action">Join Queue →</span>
+        </a>
 
-  loadDashboard(user);
-});
+        <a href="queue.html?service=placement" class="service-card">
+          <div class="service-icon">💼</div>
+          <h3>Placement Cell</h3>
+          <p>Placement and career assistance</p>
+          <span class="service-action">Join Queue →</span>
+        </a>
 
-document.getElementById("todayDate").textContent =
-  new Date().toLocaleDateString("en-IN", {
-    day: "numeric",
-    month: "short",
-    year: "numeric"
-  });
+        <a href="queue.html?service=hostel" class="service-card">
+          <div class="service-icon">🏠</div>
+          <h3>Hostel Office</h3>
+          <p>Hostel-related student services</p>
+          <span class="service-action">Join Queue →</span>
+        </a>
+      </div>
+    </section>
 
-logoutButton.addEventListener("click", async () => {
-  logoutButton.disabled = true;
-  logoutButton.textContent = "Logging out...";
+    <section class="bottom-grid">
+      <div class="panel">
+        <div class="section-head">
+          <div>
+            <h2>My Active Queue</h2>
+            <p>Your current token information</p>
+          </div>
+        </div>
+        <div class="empty-state">
+          <div class="empty-icon">🎟️</div>
+          <h3>No active tokens yet</h3>
+          <p>You haven't joined a queue. Select any campus service above to get started.</p>
+        </div>
+      </div>
 
-  try {
-    await logoutUser();
-    window.location.replace("login.html");
-  } catch (error) {
-    alert(error.message);
-    logoutButton.disabled = false;
-    logoutButton.textContent = "↪ Log Out";
-  }
-});
+      <div class="panel">
+        <div class="section-head">
+          <div>
+            <h2>Quick Guide</h2>
+            <p>How QueueFlow works</p>
+          </div>
+        </div>
+        <div class="quick-list">
+          <div class="quick-item">
+            <div class="quick-icon">🏢</div>
+            <div><strong>Choose a service</strong><span>Select the campus department.</span></div>
+          </div>
+          <div class="quick-item">
+            <div class="quick-icon">🎟️</div>
+            <div><strong>Get your token</strong><span>Receive a digital queue number.</span></div>
+          </div>
+          <div class="quick-item">
+            <div class="quick-icon">📱</div>
+            <div><strong>Track your position</strong><span>Follow your queue status online.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script type="module" src="./js/dashboard.js"></script>
+</body>
+</html>
