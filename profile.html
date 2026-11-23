@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f5fc">
+  <title>My Profile | QueueFlow</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'DM Sans',sans-serif;background:#f7f5fc;color:#302747;min-height:100vh}
+    a{text-decoration:none;color:inherit}
+    .topbar{height:75px;background:white;border-bottom:1px solid #eeeaf5;display:flex;align-items:center;justify-content:space-between;padding:0 6%}
+    .brand{display:flex;align-items:center;gap:10px;font-family:'Outfit',sans-serif;font-size:24px;font-weight:800}
+    .brand-icon{width:39px;height:39px;border-radius:13px;background:linear-gradient(135deg,#a88af7,#7048d0);display:grid;place-items:center;color:white}
+    .brand span:last-child{color:#7048d0}
+    .back{font-size:12px;color:#7956c9;font-weight:800}
+    .container{max-width:850px;margin:43px auto;padding:0 22px}
+    .tag{display:inline-block;background:#eee8ff;color:#7956c9;border-radius:30px;padding:8px 13px;font-size:10px;font-weight:800;letter-spacing:.8px;margin-bottom:14px}
+    h1{font-family:'Outfit',sans-serif;font-size:34px;letter-spacing:-1px;margin-bottom:8px}
+    .heading p{font-size:13px;color:#91889e}
+    .profile-card{background:white;border:1px solid #eeeaf5;border-radius:21px;padding:28px;margin-top:28px;box-shadow:0 12px 35px rgba(80,60,130,.035)}
+    .identity{display:flex;align-items:center;gap:17px;padding-bottom:25px;border-bottom:1px solid #f0edf5}
+    .avatar{width:70px;height:70px;border-radius:22px;background:linear-gradient(135deg,#c9b5ff,#8965e8);display:grid;place-items:center;color:white;font-family:'Outfit',sans-serif;font-size:29px;font-weight:800}
+    .identity h2{font-family:'Outfit',sans-serif;font-size:21px;margin-bottom:5px}
+    .identity p{font-size:12px;color:#9c93a8}
+    .section-title{font-family:'Outfit',sans-serif;font-size:17px;margin:25px 0 18px}
+    .field{margin-bottom:18px}
+    label{display:block;font-size:12px;font-weight:800;margin-bottom:9px}
+    input{width:100%;padding:14px 15px;border:1px solid #e9e3f3;border-radius:12px;background:#fbfaff;font:13px 'DM Sans',sans-serif;color:#302747;outline:none}
+    input:focus{border-color:#9676e2;box-shadow:0 0 0 4px rgba(150,118,226,.12)}
+    input:disabled{background:#f3f1f7;color:#958da0}
+    .hint{font-size:10px;color:#aaa1b5;margin-top:7px}
+    .save{border:0;border-radius:12px;padding:14px 20px;background:linear-gradient(110deg,#a083ef,#7048cf);color:white;font-size:12px;font-weight:800}
+    .save:disabled{opacity:.6;cursor:not-allowed}
+    .message{display:none;padding:12px 14px;border-radius:11px;font-size:11px;line-height:1.6;margin:17px 0}
+    .message.error{display:block;background:#fff0f0;color:#b33d4a}
+    .message.success{display:block;background:#eafaf2;color:#23865d}
+    .account-info{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .info{background:#faf8ff;border:1px solid #f0edf5;border-radius:13px;padding:15px}
+    .info span{font-size:10px;color:#a39aac}
+    .info strong{display:block;font-size:12px;margin-top:7px;overflow-wrap:anywhere}
+    .logout{width:100%;margin-top:23px;padding:14px;border:1px solid #f0d5d8;border-radius:12px;background:#fff7f7;color:#bd5360;font-size:12px;font-weight:800}
+    .logout:hover{background:#ffe9eb}
+    .footer{text-align:center;font-size:10px;color:#aaa1b5;margin:30px 0}
+    @media(max-width:500px){.profile-card{padding:20px}.account-info{grid-template-columns:1fr}h1{font-size:29px}}
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="dashboard.html" class="brand">
+    <span class="brand-icon">⌘</span>
+    Queue<span>Flow</span>
+  </a>
+  <a href="dashboard.html" class="back">← Dashboard</a>
+</header>
+
+<main class="container">
+  <section class="heading">
+    <span class="tag">ACCOUNT SETTINGS</span>
+    <h1>My Profile</h1>
+    <p>View and update your QueueFlow account details.</p>
+  </section>
+
+  <section class="profile-card">
+    <div class="identity">
+      <div class="avatar" id="avatar">S</div>
+      <div>
+        <h2 id="displayName">Loading...</h2>
+        <p id="displayEmail">Loading account information...</p>
+      </div>
+    </div>
+
+    <h3 class="section-title">Personal information</h3>
+
+    <div id="message" class="message" role="alert"></div>
+
+    <form id="profileForm">
+      <div class="field">
+        <label for="name">Full name</label>
+        <input type="text" id="name" maxlength="70" required>
+      </div>
+
+      <div class="field">
+        <label for="email">Email address</label>
+        <input type="email" id="email" disabled>
+        <p class="hint">Your registered email address cannot be changed here.</p>
+      </div>
+
+      <button type="submit" class="save" id="saveButton">Save Changes →</button>
+    </form>
+
+    <h3 class="section-title">Account information</h3>
+
+    <div class="account-info">
+      <div class="info">
+        <span>Account status</span>
+        <strong>Active</strong>
+      </div>
+      <div class="info">
+        <span>Authentication</span>
+        <strong>Firebase Email / Password</strong>
+      </div>
+      <div class="info">
+        <span>Account created</span>
+        <strong id="createdDate">Loading...</strong>
+      </div>
+      <div class="info">
+        <span>Account ID</span>
+        <strong id="accountId">Loading...</strong>
+      </div>
+    </div>
+
+    <button class="logout" id="logoutButton">↪ Log Out</button>
+  </section>
+
+  <div class="footer">QueueFlow · Smart Campus Queue Management System</div>
+</main>
+
+<script type="module" src="./js/profile.js"></script>
+</body>
+</html>
